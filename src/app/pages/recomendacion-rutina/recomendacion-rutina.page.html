@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Encuentra tu rutina ideal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label>¿Cual es tu meta?</ion-label>
+    <ion-select [(ngModel)]="selectedOption" (ionChange)="updateRoutine()">
+      <ion-select-option value="opcion1">Ganar masa muscular</ion-select-option>
+      <ion-select-option value="opcion2">Perder peso</ion-select-option>
+      <ion-select-option value="opcion3">Solo por salud</ion-select-option>
+    </ion-select>
+  </ion-item>
+ 
+  <ion-item>
+    <ion-label>{{ routineMessage }}</ion-label>
+  </ion-item>
+
+
+  <ion-button class="btn-rutinas" expand="block" color="warning" [routerLink]="'/rutinas'" >Ver tu Rutinas</ion-button>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="btn-volver" color="dark" [routerLink]="'/home'" >Volver</ion-button>
+</ion-footer>
+
+
+

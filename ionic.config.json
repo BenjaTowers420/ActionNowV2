@@ -1,0 +1,7 @@
+{
+  "name": "appfit",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Recuperar contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="enviarFormulario()" #formularioRegistro="ngForm">
+    <ion-item class="container">
+      <ion-label>Usuario</ion-label>
+      <ion-input placeholder="Nombre de usuario" type="text" name="usuario" [(ngModel)]="datosRegistro.usuario"
+      required #usuario="ngModel"></ion-input>
+    </ion-item>
+
+    <ion-item class="container">
+      <ion-label>Contraseña</ion-label>
+      <ion-input placeholder="Contraseña" type="password" name="contrasena" [(ngModel)]="datosRegistro.contrasena" required minlength="6" #contrasena="ngModel"></ion-input>
+    </ion-item>
+
+    <ion-item class="container">
+      <ion-label>Contraseña</ion-label>
+      <ion-input placeholder="Confirme Contraseña" type="password" name="confirmarContrasena" [(ngModel)]="datosRegistro.confirmarContrasena" required #confirmarContrasena="ngModel"></ion-input>
+    </ion-item>
+
+    <ion-button class="btn-reg" color="warning" expand="block" type="submit">Cambiar Contraseña</ion-button>
+  </form>
+  </ion-content>

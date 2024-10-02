@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Administrar Usuarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let usuario of usuarios">
+      <ion-label>
+        <h2>{{ usuario.nombre }}</h2>
+        <p>{{ usuario.estado }}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button color="primary" (click)="verificarUsuario(usuario)">Verificar</ion-button>
+        <ion-button color="danger" (click)="banearUsuario(usuario)">Banear</ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <ion-item>
+    <ion-input placeholder="Nombre de usuario" [(ngModel)]="nuevoUsuario"></ion-input>
+    <ion-button expand="full" (click)="agregarUsuario()">Agregar Usuario</ion-button>
+  </ion-item>
+</ion-content>

@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Rutinas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label>Selecciona una rutina</ion-label>
+    <ion-select [(ngModel)]="rutinaSeleccionada" (ionChange)="actualizarEjercicios()">
+      <ion-select-option value="pesas">Rutina con Pesas</ion-select-option>
+      <ion-select-option value="calistenia">Calistenia</ion-select-option>
+      <ion-select-option value="acondicionamiento">Ejercicio de Acondicionamiento</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+
+  <div *ngFor="let ejercicio of ejercicios" class="caja-ejercicio">
+    <ion-card>
+      <ion-card-header>
+        <h2>{{ ejercicio.nombre }}</h2>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Repeticiones:</strong> {{ ejercicio.repeticiones }}</p>
+        <p><strong>Descripción:</strong> {{ ejercicio.descripcion }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer class="btn-volver">
+  <ion-button color="dark"  [routerLink]="'/home'" >Volver</ion-button>
+</ion-footer>
+
+
+

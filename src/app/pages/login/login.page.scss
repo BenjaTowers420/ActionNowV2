@@ -1,0 +1,37 @@
+.container {
+  position: relative;
+  padding: 20px;
+  padding-top: 30px;
+  box-sizing: border-box;
+}
+
+ion-item {
+  position: relative;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  --inner-padding-top: 20px;   
+  --inner-padding-bottom: 10px;
+  --border-radius: 10px;
+  --border: 1px solid #ccc;
+}
+
+ion-label {
+  position: absolute;
+  top: -10px; 
+  left: 15px; 
+  padding: 0 5px; 
+  font-size: 0.9em; 
+}
+
+ion-input {
+  --padding-start: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.btn-ing-reg {
+  padding: 1em;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}

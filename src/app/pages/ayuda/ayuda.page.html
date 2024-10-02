@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ayuda</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form (ngSubmit)="enviarFormulario()">
+    <!-- Menú desplegable -->
+    <ion-item>
+      <ion-label>Selecciona un motivo</ion-label>
+      <ion-select [(ngModel)]="motivoSeleccionado" name="motivoSeleccionado" required>
+        <ion-select-option value="problemaTecnico">Problema Técnico</ion-select-option>
+        <ion-select-option value="sugerencia">Sugerencia</ion-select-option>
+        <ion-select-option value="reclamo">Reclamo</ion-select-option>
+        <ion-select-option value="otro">Otro motivo</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
+    <!-- Campo de texto -->
+    <ion-item>
+      <ion-label position="floating">Tu mensaje</ion-label>
+      <ion-textarea [(ngModel)]="mensaje" name="mensaje" required></ion-textarea>
+    </ion-item>
+
+    <div class="btn-enviar">
+      <ion-button color="warning" expand="block" (click)="irPagina()">Enviar</ion-button>
+    </div>
+  </form>
+
+
+</ion-content>
+
+<ion-footer class="btn-volver">
+  <ion-button color="dark" [routerLink]="'/home'" >Volver</ion-button>
+</ion-footer>
+
+
+
+
+
+
+

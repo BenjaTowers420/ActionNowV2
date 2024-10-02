@@ -1,0 +1,50 @@
+.btn-imc {
+    padding: 1em;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-volver {
+    padding: 1em;
+}
+
+.container {
+    align-items: center;
+    padding: 20px;
+    padding-top: 40px;
+    box-sizing: border-box;
+}
+
+ion-input{
+    --padding-start: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+ion-item {
+    --inner-padding-start: 0;
+    --inner-padding-end: 15px;   
+    --inner-padding-top: 0;   
+    --inner-padding-bottom: 10px;
+    --border-radius: 10px;
+    --border: 1px solid #ccc;
+  }
+
+  ion-label {
+    padding-bottom: 20px;
+  }
+
+.btn-cal {
+    padding: 1em;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card1 {
+    background-color: rgba(37, 37, 37, 0.5);
+  --box-shadow: none;
+  --border-width: 0;
+}

@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="irAlCarrito()">
+        <ion-icon slot="icon-only" name="cart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Productos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let producto of productos">
+      <div class="image-container">
+        <img src="{{producto.imagen}}" alt="{{producto.nombre}}">
+      </div>    
+        <ion-label>
+          <h2>{{ producto.nombre }}</h2>
+          <p>{{ producto.descripcion }}</p>
+          <p>Precio: ${{ producto.precio | number:'1.0-0' }}</p>
+        </ion-label>
+      <ion-button color="warning" (click)="agregarAlCarrito(producto)">Agregar al carrito</ion-button>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-title>Total: ${{ total | number:'1.0-0' }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button color="warning" expand="block" (click)="Pagar()">Pagar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>
+
+
+

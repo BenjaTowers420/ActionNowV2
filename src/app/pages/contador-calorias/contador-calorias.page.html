@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Contador de Calorías</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label>Selecciona un alimento</ion-label>
+    <ion-select [(ngModel)]="alimentoSeleccionado" (ionChange)="calcularCalorias()">
+      <ion-select-option *ngFor="let alimento of alimentos" [value]="alimento">
+        {{ alimento.nombre }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label position="floating">Cantidad (gramos)</ion-label>
+    <ion-input type="number" [(ngModel)]="cantidadGramos" (ionInput)="calcularCalorias()"></ion-input>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>Total de Calorías:</ion-label>
+    <ion-text>{{ totalCalorias }} Calorías</ion-text>
+  </ion-item>
+</ion-content>
+
+<ion-footer class="btn-volver" >
+  <ion-button color="dark"  [routerLink]="'/home'" >Volver</ion-button>
+</ion-footer>
+
+
+

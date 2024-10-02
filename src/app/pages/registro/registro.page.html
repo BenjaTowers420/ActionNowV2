@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <form (ngSubmit)="enviarFormulario()" #formularioRegistro="ngForm">
+    <ion-item class="container">
+      <ion-input
+        placeholder="Nombre Usuario"
+        type="text"
+        name="usuario"
+        [(ngModel)]="datosRegistro.usuario"
+        required
+        #usuario="ngModel"
+      ></ion-input>
+    </ion-item>
+
+
+    <ion-item class="container">
+      <ion-input placeholder="Contraseña" type="password" name="contrasena" [(ngModel)]="datosRegistro.contrasena" required minlength="6" #contrasena="ngModel"
+      ></ion-input>
+    </ion-item>
+
+
+    <ion-item class="container">
+      <ion-input placeholder="Confirme Contraseña" type="password" name="confirmarContrasena" [(ngModel)]="datosRegistro.confirmarContrasena" required #confirmarContrasena="ngModel"
+      ></ion-input>
+    </ion-item>
+
+
+    <ion-button class="btn-reg" color="warning" expand="block" type="submit">Registrarse</ion-button>
+  </form>
+</ion-content>
+
+<ion-footer class="btn-volver">
+  <ion-button color="dark" [routerLink]="'/login'" >Volver</ion-button>
+</ion-footer>
