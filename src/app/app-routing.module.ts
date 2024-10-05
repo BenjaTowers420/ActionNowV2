@@ -68,6 +68,14 @@ const routes: Routes = [
     path: '**', 
     redirectTo: 'notfound',
     pathMatch: 'full'
+  },
+  {
+    path: 'agregar-usuario',
+    loadChildren: () => import('./pages/agregar-usuario/agregar-usuario.module').then( m => m.AgregarUsuarioPageModule)
+  },
+  {
+    path: 'modificar-usuario',
+    loadChildren: () => import('./pages/modificar-usuario/modificar-usuario.module').then( m => m.ModificarUsuarioPageModule)
   }
 
 
