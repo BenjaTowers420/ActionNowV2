@@ -3,10 +3,6 @@ import { NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 
-interface Usuario {
-  nombre: string;
-  estado: string;
-}
 
 @Component({
   selector: 'app-admin',
@@ -40,7 +36,7 @@ export class AdminPage {
 
   }
   eliminar(x:any){
-    //this.bd.eliminarNoticia(x.idnoticia);
+    this.bd.eliminarUsuario(x.id_usuario);
   }
 
   agregar(){

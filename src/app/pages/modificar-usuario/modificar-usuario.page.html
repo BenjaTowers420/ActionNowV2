@@ -5,9 +5,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">modificar-usuario</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-item>
+    <ion-input label="Nombre Usuario" labelPlacement="floating" placeholder="Ingrese nombre" [(ngModel)]="usuario.nombre"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Rol" labelPlacement="floating" placeholder="Ingrese rol"  [(ngModel)]="usuario.rol"></ion-input>
+  </ion-item>
+  <ion-button color="success" (click)="modificar()">Modificar Usuario</ion-button>
+  <ion-button color="warning" [routerLink]="['/home']">Ir a lista de usuarios</ion-button>
 </ion-content>

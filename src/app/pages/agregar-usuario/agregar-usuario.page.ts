@@ -8,9 +8,16 @@ import { ServicebdService } from 'src/app/services/servicebd.service';
   styleUrls: ['./agregar-usuario.page.scss'],
 })
 export class AgregarUsuarioPage implements OnInit {
+  nombre: string = "";
+  rol: string = "";
+
   constructor(private bd: ServicebdService, private router: Router) { }
 
   ngOnInit() {
+  }
+
+  insertar(){
+    this.bd.insertarUsuario(this.nombre, this.rol);
   }
 
 }

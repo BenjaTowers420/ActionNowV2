@@ -8,7 +8,7 @@ import { Usuarios } from './usuarios';
   providedIn: 'root'
 })
 export class ServicebdService {
-  
+
   //variable de conexión a Base de Datos
   public database!: SQLiteObject;
 
@@ -107,6 +107,98 @@ tablaEjercicio: string =
 
   dbState(){
     return this.isDBReady.asObservable();
+  }
+
+ 
+  createBD(){
+    //varificar si la plataforma esta disponible
+    this.platform.ready().then(()=>{
+      //crear la Base de Datos
+      this.sqlite.create({
+        name: 'usuarios.db',
+        location: 'default'
+      }).then((db: SQLiteObject)=>{
+        //capturar la conexion a la BD
+        this.database = db;
+        //llamamos a la función para crear las tablas
+        this.crearTablas();
+      }).catch(e=>{
+        this.presentAlert('Base de Datos', 'Error en crear la BD: ' + JSON.stringify(e));
+      })
+    })
+
+  }
+
+  async crearTablas(){
+    try{
+      //ejecuto la creación de Tablas
+      await this.database.executeSql(this.tablaUsuario, []);
+
+      //ejecuto los insert por defecto en el caso que existan
+      await this.database.executeSql(this.registroUsuario, []);
+
+      this.seleccionarUsuarios();
+      //modifico el estado de la Base de Datos
+      this.isDBReady.next(true);
+
+    }catch(e){
+      this.presentAlert('Creación de Tablas', 'Error en crear las tablas: ' + JSON.stringify(e));
+    }
+  }
+
+  seleccionarUsuarios(){
+    return this.database.executeSql('SELECT * FROM usuario', []).then(res=>{
+       //variable para almacenar el resultado de la consulta
+       let items: Usuarios[] = [];
+       //valido si trae al menos un registro
+       if(res.rows.length > 0){
+        //recorro mi resultado
+        for(var i=0; i < res.rows.length; i++){
+          //agrego los registros a mi lista
+          items.push({
+            id_usuario: res.rows.item(i).id_usuario,
+            nombre: res.rows.item(i).nombre,
+            estatura: res.rows.item(i).estatura,
+            peso: res.rows.item(i).peso,
+            objetivo: res.rows.item(i).objetivo,
+            id_rol: res.rows.item(i).id_rol
+          })
+        }
+        
+       }
+       //actualizar el observable
+       this.listadoUsuarios.next(items as any);
+
+    })
+  }
+
+  eliminarUsuario(id:string){
+    return this.database.executeSql('DELETE FROM usuario WHERE id_usuario = ?',[id]).then(res=>{
+      this.presentAlert("Eliminar","Usuario Eliminado");
+      this.seleccionarUsuarios();
+    }).catch(e=>{
+      this.presentAlert('Eliminar', 'Error: ' + JSON.stringify(e));
+    })
+  }
+
+  modificarUsuario(id:string, nombre:string, rol : string){
+    this.presentAlert("service","ID: " + id);
+    return this.database.executeSql('UPDATE usuario SET nombre = ?, rol = ? WHERE id_usuario = ?',[nombre,rol,id]).then(res=>{
+      this.presentAlert("Modificar","Usuario Modificado");
+      this.seleccionarUsuarios();
+    }).catch(e=>{
+      this.presentAlert('Modificar', 'Error: ' + JSON.stringify(e));
+    })
+
+  }
+
+  insertarUsuario(nombre:string, rol:string){
+    return this.database.executeSql('INSERT INTO noticia(nombre,rol) VALUES (?,?)',[nombre, rol]).then(res=>{
+      this.presentAlert("Insertar","Usuario Registrado");
+      this.seleccionarUsuarios();
+    }).catch(e=>{
+      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+    })
   }
 
 
