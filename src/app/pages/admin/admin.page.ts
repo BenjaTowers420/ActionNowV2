@@ -23,13 +23,21 @@ export class AdminPage {
   constructor(private bd: ServicebdService, private router: Router) { }
 
   ngOnInit() {
-    
+    this.bd.dbState().subscribe(data=>{
+      //validar si la bd esta lista
+      if(data){
+        //subscribir al observable de la listaNoticias
+        this.bd.fetchUSuarios().subscribe(res=>{
+          this.arregloUsuario = res;
+        })
+      }
+    })
   }
 
   modificar(x:any){
     let navigationsExtras: NavigationExtras = {
       state: {
-        noticia: x
+        usuario: x
       }
     }
     this.router.navigate(['/modificar-usuario'], navigationsExtras);

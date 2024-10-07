@@ -64,19 +64,19 @@ const routes: Routes = [
     path: 'productos',
     loadChildren: () => import('./pages/productos/productos.module').then( m => m.ProductosPageModule)
   },
-  {
-    path: '**', 
-    redirectTo: 'notfound',
-    pathMatch: 'full'
-  },
-  {
-    path: 'agregar-usuario',
-    loadChildren: () => import('./pages/agregar-usuario/agregar-usuario.module').then( m => m.AgregarUsuarioPageModule)
-  },
-  {
-    path: 'modificar-usuario',
-    loadChildren: () => import('./pages/modificar-usuario/modificar-usuario.module').then( m => m.ModificarUsuarioPageModule)
-  }
+  // {
+  //   path: 'agregar-usuario',
+  //   loadChildren: () => import('./pages/agregar-usuario/agregar-usuario.module').then( m => m.AgregarUsuarioPageModule)
+  // },
+  // {
+  //   path: 'modificar-usuario',
+  //   loadChildren: () => import('./pages/modificar-usuario/modificar-usuario.module').then( m => m.ModificarUsuarioPageModule)
+  // },
+  // {
+  //   path: '**', 
+  //   redirectTo: 'notfound',
+  //   pathMatch: 'full'
+  // }
 
 
 ];

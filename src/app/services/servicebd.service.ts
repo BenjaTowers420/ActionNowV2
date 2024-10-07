@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Rol } from './rol';
 import { Usuarios } from './usuarios';
 
 @Injectable({
@@ -83,6 +84,7 @@ tablaEjercicio: string =
     "(2, 'Dalas Review', 170, 500, 'bajar de peso', 2), ";
 
   //GUARDAR DATOS DE LAS CONSULTAS EN LAS TABLAS
+  listadoRol = new BehaviorSubject ([]);
   listadoUsuarios = new BehaviorSubject ([]);
 
   //variable para el status de la Base de datos
@@ -101,6 +103,9 @@ tablaEjercicio: string =
   }
 
   //metodos para manipular los observables
+  fetchRol(): Observable<Rol[]>{
+    return this.listadoRol.asObservable();
+  }
   fetchUSuarios(): Observable<Usuarios[]>{
     return this.listadoUsuarios.asObservable();
   }
@@ -181,25 +186,25 @@ tablaEjercicio: string =
     })
   }
 
-  modificarUsuario(id:string, nombre:string, rol : string){
-    this.presentAlert("service","ID: " + id);
-    return this.database.executeSql('UPDATE usuario SET nombre = ?, rol = ? WHERE id_usuario = ?',[nombre,rol,id]).then(res=>{
-      this.presentAlert("Modificar","Usuario Modificado");
-      this.seleccionarUsuarios();
-    }).catch(e=>{
-      this.presentAlert('Modificar', 'Error: ' + JSON.stringify(e));
-    })
+  // modificarUsuario(id:string, nombre:string, rol : string){
+  //   this.presentAlert("service","ID: " + id);
+  //   return this.database.executeSql('UPDATE usuario SET nombre = ?, rol = ? WHERE id_usuario = ?',[nombre,rol,id]).then(res=>{
+  //     this.presentAlert("Modificar","Usuario Modificado");
+  //     this.seleccionarUsuarios();
+  //   }).catch(e=>{
+  //     this.presentAlert('Modificar', 'Error: ' + JSON.stringify(e));
+  //   })
 
-  }
+  // }
 
-  insertarUsuario(nombre:string, rol:string){
-    return this.database.executeSql('INSERT INTO noticia(nombre,rol) VALUES (?,?)',[nombre, rol]).then(res=>{
-      this.presentAlert("Insertar","Usuario Registrado");
-      this.seleccionarUsuarios();
-    }).catch(e=>{
-      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
-    })
-  }
+  // insertarUsuario(nombre:string, rol:string){
+  //   return this.database.executeSql('INSERT INTO noticia(nombre,rol) VALUES (?,?)',[nombre, rol]).then(res=>{
+  //     this.presentAlert("Insertar","Usuario Registrado");
+  //     this.seleccionarUsuarios();
+  //   }).catch(e=>{
+  //     this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+  //   })
+  // }
 
 
 }
