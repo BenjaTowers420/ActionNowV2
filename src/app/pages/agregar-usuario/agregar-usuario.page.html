@@ -5,12 +5,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-item></ion-item>
+  <ion-item>
     <ion-input label="Nombre Usuario" labelPlacement="floating" placeholder="Ingrese nombre" [(ngModel)]="nombre"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input label="Rol" labelPlacement="floating" placeholder="Ingrese rol"  [(ngModel)]="rol"></ion-input>
+    <ion-label>Rol</ion-label>
+    <ion-select placeholder="Seleccione rol" [(ngModel)]="id_rol">
+      <ion-select-option value="1">Admin</ion-select-option>
+      <ion-select-option value="2">Usuario</ion-select-option>
+    </ion-select>
   </ion-item>
   <ion-button color="success" (click)="insertar()">Agregar Usuario</ion-button>
-  <ion-button color="warning" [routerLink]="['/listar']">Ir a lista de Usuarios</ion-button>
+  <ion-button color="warning" [routerLink]="['/admin']">Ir a lista de Usuarios</ion-button>
 </ion-content>

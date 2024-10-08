@@ -9,7 +9,7 @@ import { ServicebdService } from 'src/app/services/servicebd.service';
 })
 export class AgregarUsuarioPage implements OnInit {
   nombre: string = "";
-  rol: string = "";
+  id_rol: number = 0;
 
   constructor(private bd: ServicebdService, private router: Router) { }
 
@@ -17,7 +17,7 @@ export class AgregarUsuarioPage implements OnInit {
   }
 
   insertar(){
-    this.bd.insertarUsuario(this.nombre, this.rol);
+    this.bd.insertarUsuario(this.nombre, this.id_rol);
   }
 
 }

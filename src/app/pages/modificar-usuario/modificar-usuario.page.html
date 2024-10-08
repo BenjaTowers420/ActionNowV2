@@ -1,19 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>modificar-usuario</ion-title>
+    <ion-title>Modificar Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-item>
     <ion-label position="floating">Nombre Usuario</ion-label>
-    <ion-input placeholder="Ingrese nombre" [(ngModel)]="usuario.nombre"></ion-input>
+    <ion-input placeholder="Ingrese nombre" [(ngModel)]="usuario.nombre" required></ion-input>
   </ion-item>
+
   <ion-item>
     <ion-label position="floating">Rol</ion-label>
-    <ion-input placeholder="Ingrese rol" [(ngModel)]="usuario.rol"></ion-input>
+    <ion-select [(ngModel)]="usuario.id_rol" placeholder="Seleccione un rol" required>
+      <ion-select-option value="1">Admin</ion-select-option>
+      <ion-select-option value="2">Usuario</ion-select-option>
+    </ion-select>
   </ion-item>
-  
+
   <ion-button color="success" (click)="modificar()">Modificar Usuario</ion-button>
-  <ion-button color="warning" [routerLink]="['/home']">Ir a lista de usuarios</ion-button>
+  <ion-button color="warning" [routerLink]="['/admin']">Ir a lista de usuarios</ion-button>
 </ion-content>

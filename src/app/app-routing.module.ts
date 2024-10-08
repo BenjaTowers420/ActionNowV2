@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
+  
+  {
+    path: '',
+    redirectTo: 'admin',
+    pathMatch: 'full'
+  },
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
   },
   {
     path: 'login',
@@ -64,19 +65,19 @@ const routes: Routes = [
     path: 'productos',
     loadChildren: () => import('./pages/productos/productos.module').then( m => m.ProductosPageModule)
   },
-  // {
-  //   path: 'agregar-usuario',
-  //   loadChildren: () => import('./pages/agregar-usuario/agregar-usuario.module').then( m => m.AgregarUsuarioPageModule)
-  // },
-  // {
-  //   path: 'modificar-usuario',
-  //   loadChildren: () => import('./pages/modificar-usuario/modificar-usuario.module').then( m => m.ModificarUsuarioPageModule)
-  // },
-  // {
-  //   path: '**', 
-  //   redirectTo: 'notfound',
-  //   pathMatch: 'full'
-  // }
+  {
+    path: 'agregar-usuario',
+    loadChildren: () => import('./pages/agregar-usuario/agregar-usuario.module').then( m => m.AgregarUsuarioPageModule)
+  },
+  {
+    path: 'modificar-usuario',
+    loadChildren: () => import('./pages/modificar-usuario/modificar-usuario.module').then( m => m.ModificarUsuarioPageModule)
+  },
+  {
+    path: '**', 
+    redirectTo: 'notfound',
+    pathMatch: 'full'
+  },
 
 
 ];

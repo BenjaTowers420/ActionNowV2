@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ModificarUsuarioPageRoutingModule } from './modificar-usuario-routing.module';
 
-import { ModificarUsuarioPage } from './modificar-usuario.page';
+import { ModificarPage } from './modificar-usuario.page';
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { ModificarUsuarioPage } from './modificar-usuario.page';
     IonicModule,
     ModificarUsuarioPageRoutingModule
   ],
-  declarations: [ModificarUsuarioPage]
+  declarations: [ModificarPage]
 })
 export class ModificarUsuarioPageModule {}
