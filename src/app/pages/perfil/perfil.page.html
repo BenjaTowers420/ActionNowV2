@@ -5,6 +5,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+
+  <div class="cont-foto">
+    <img [src]="imagen ? imagen : 'https://cdn.icon-icons.com/icons2/3868/PNG/512/profile_circle_icon_242774.png'" 
+    alt="Foto de perfil" class="foto-perfil" (click)="takePicture()">
+  </div>
     <ion-card>
       <ion-card-header>
         <ion-card-title>{{ perfil.nombre }}</ion-card-title>

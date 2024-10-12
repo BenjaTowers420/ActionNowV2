@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ServicebdService } from 'src/app/services/servicebd.service';
 
 
 @Component({
@@ -14,9 +15,10 @@ export class RegistroPage {
     contrasena: '',
     confirmarContrasena: ''
   };
+  id_rol: number = 2;
 
 
-  constructor(private router: Router, private alertController: AlertController) {}
+  constructor(private router: Router, private alertController: AlertController, private bd: ServicebdService) {}
 
 
   async mostrarAlerta(mensaje: string) {
@@ -50,6 +52,7 @@ export class RegistroPage {
     }   else if (this.datosRegistro.contrasena !== this.datosRegistro.confirmarContrasena) {
       this.mostrarAlerta('Las contraseñas no coinciden.');
     }  else {
+      this.bd.registrarUsuario(this.datosRegistro.usuario, this.datosRegistro.contrasena, this.id_rol)
       this.router.navigate(['/login']);
     }
   }

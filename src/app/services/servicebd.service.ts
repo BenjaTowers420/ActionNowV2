@@ -35,7 +35,7 @@ tablaRol: string = "CREATE TABLE IF NOT EXISTS rol (id_rol INTEGER PRIMARY KEY, 
 
 //Tablas con Clave
 
-tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY, nombre VARCHAR(100) NOT NULL, estatura INTEGER, peso INTEGER, objetivo VARCHAR(60), id_rol INTEGER NOT NULL, FOREIGN KEY (id_rol) REFERENCES rol(id_rol));";
+tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY, nombre VARCHAR(100) NOT NULL, estatura INTEGER, peso INTEGER, objetivo VARCHAR(60), id_rol INTEGER NOT NULL, contrasena VARCHAR(150) NOT NULL, FOREIGN KEY (id_rol) REFERENCES rol(id_rol));";
 
 // tablaAyuda: string = 
 //     "CREATE TABLE IF NOT EXISTS ayuda (" +
@@ -65,7 +65,7 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
   registroRol: string = "INSERT OR IGNORE INTO rol (id_rol, nombre_rol) VALUES (1, 'administrador'), (2, 'usuario')";
     
 
-  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, objetivo, id_rol) VALUES(1, 'Josue Machaca', 1, 1, '', 1), (2, 'Don Evo', 170, 500, 'Bajar de peso', 2);";
+  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, objetivo, id_rol, contrasena) VALUES(1, 'Josue Machaca', 1, 1, '', 1, 'ASD12345'), (2, 'Don Evo', 170, 500, 'Bajar de peso', 2, 'ASD12345');";
 
   //POr si da error al agregar datos
   // borrarTablad:string="DROP TABLE usuario;";
@@ -97,7 +97,7 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
     return this.listadoRol.asObservable();
   }
 
-  fetchUSuarios(): Observable<Usuarios[]>{
+  fetchUsuarios(): Observable<Usuarios[]>{
     return this.listadoUsuarios.asObservable();
   }
 
@@ -127,6 +127,10 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
 
   async crearTablas(){
     try{
+
+      // Eliminar la tabla si ya existe
+      //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS rol', []);
 
       //ejecuto la creación de Tablas
       await this.database.executeSql(this.tablaRol, []);
@@ -181,7 +185,6 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
   }
 
   modificarUsuario(id:string, nombre:string, id_rol : string){
-    this.presentAlert("service","ID: " + id);
     return this.database.executeSql('UPDATE usuario SET nombre = ?, id_rol = ? WHERE id_usuario = ?',[nombre,id_rol,id]).then(res=>{
       this.presentAlert("Modificar","Usuario Modificado");
       this.seleccionarUsuarios();
@@ -198,6 +201,15 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
     }).catch(e=>{
       this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
     })
+  }
+
+  registrarUsuario(nombre: string, contrasena: string, id_rol: number) {
+    return this.database.executeSql('INSERT INTO usuario(nombre, contrasena, id_rol) VALUES (?, ?, ?)', [nombre, contrasena, id_rol]).then(res => {
+      this.presentAlert("Registro", "Usuario Registrado");
+      this.seleccionarUsuarios();
+    }).catch(e => {
+      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+    });
   }
 
 

@@ -17,7 +17,7 @@ export class AdminPage {
   ngOnInit() {
     this.bd.dbState().subscribe(data => {
       if (data) {
-        this.bd.fetchUSuarios().subscribe(res => {
+        this.bd.fetchUsuarios().subscribe(res => {
           this.arregloUsuario = res;
         });
       }
