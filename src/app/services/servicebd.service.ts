@@ -212,5 +212,17 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
     });
   }
 
+  verificarUsuario(nombre: string, contrasena: string): Promise<boolean> {
+    return this.database.executeSql('SELECT * FROM usuario WHERE nombre = ? AND contrasena = ?', [nombre, contrasena]).then(res => {
+      if (res.rows.length > 0) {
+        return true;  
+      } else {
+        return false; 
+      }
+    }).catch(e => {
+      this.presentAlert('Error', 'Error al verificar: ' + JSON.stringify(e));
+      return false;
+    });
+  }  
 
 }

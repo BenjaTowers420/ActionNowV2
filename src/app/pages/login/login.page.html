@@ -4,35 +4,21 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-  <form (ngSubmit)="enviarFormulario()" #formularioLogin="ngForm">
-      <ion-item class="container">
-        <ion-label>Usuario</ion-label>
-        <ion-input
-          type="text"
-          name="usuario"
-          [(ngModel)]="datosLogin.usuario"
-          required
-          #usuario="ngModel"
-          placeholder="Coloque su Usuario"
-        ></ion-input>
-      </ion-item>
+  <form>
+    <ion-item class="container">
+      <ion-label position="floating">Nombre de Usuario</ion-label>
+      <ion-input [(ngModel)]="datosLogin.usuario" type="text"></ion-input>
+    </ion-item>
 
-      <ion-item class="container">
-        <ion-label>Contraseña</ion-label>
-        <ion-input type="password" name="contrasena" [(ngModel)]="datosLogin.contrasena" required minlength="6" #contrasena="ngModel"
-        placeholder="Coloque su contraseña"></ion-input>
-      </ion-item>
+    <ion-item class="container">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input [(ngModel)]="datosLogin.contrasena" type="password"></ion-input>
+    </ion-item>
 
-
-    <ion-button class="btn-ing-reg" color="warning" expand="block" type="submit">Ingresar</ion-button>
+    <ion-button class="btn-ing-reg" color="warning" expand="block" (click)="login()">Ingresar</ion-button>
     <ion-button class="btn-ing-reg" color="warning" expand="block" [routerLink]="'/registro'">Registrar</ion-button>
     <ion-button class="btn-ing-reg" color="warning" expand="block" [routerLink]="'/recuperar-contra'">Olvidó su contraseña?</ion-button>
     <ion-button class="btn-ing-reg" color="warning" expand="block" [routerLink]="'/admin'">Admin</ion-button>
-
   </form>
 </ion-content>
-
-
-

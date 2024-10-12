@@ -6,6 +6,7 @@
           <ion-icon name="close"></ion-icon>
         </ion-button>
       </ion-buttons>
+      <ion-title>{{ nombreUsuario }}</ion-title>
       <ion-title>
         <img src="assets/img/logo.png" alt="Logo" class="logo">
         Menu</ion-title>
@@ -51,9 +52,9 @@
       </ion-item>
 
       <div class="menu-footer">
-        <ion-item [routerDirection]="'root'" [routerLink]="''" (click)="navigateTo('/')">
+        <ion-item (click)="cerrarSesion()">
           <ion-icon class="icono" slot="start" name="power-outline"></ion-icon>
-          <ion-label>Cerrar Sesion</ion-label>
+          <ion-label>Cerrar Sesión</ion-label>
         </ion-item>
       </div>
 
@@ -63,6 +64,7 @@
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
+      <ion-title>{{ nombreUsuario }}</ion-title>
       <ion-title slot="end" class="logo-log">
         <img src="assets/img/logo.png" alt="Logo" class="icon">
       </ion-title>
