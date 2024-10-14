@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { ServicebdService } from 'src/app/services/servicebd.service';
 
 @Component({
   selector: 'app-perfil',
@@ -8,18 +9,29 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 })
 export class PerfilPage {
   perfil = {
-    nombre: 'Josue Machaca',
-    edad: 28,
-    email: 'j.machaca@gmail.com',
-    telefono: '+56912345678',
-    direccion: 'Av. Del Peru 123, Recoleta, Chile',
-    descripcion: 'Desarrollador de software con 5 años de experiencia en desarrollo web y móvil.'
+    nombre: '',
+    edad: 0,
   };
+
+  usuario: any;
 
   imagen: any;
 
-  constructor() {
+  constructor(private bd: ServicebdService) {
     this.loadProfilePicture(); // Cargar la imagen al iniciar la página
+  }
+  ngOnInit() {
+    this.cargarDatosUsuario();
+    this.loadProfilePicture();
+  }
+
+  cargarDatosUsuario() {
+    const nombreUsuario = localStorage.getItem('nombreUsuario');
+    if (nombreUsuario) {
+      this.bd.obtenerUsuarioPorNombre(nombreUsuario).then(usuario => {
+        this.usuario = usuario;
+      });
+    }
   }
 
   // Método para tomar la foto y guardar la ruta en localStorage
@@ -29,18 +41,30 @@ export class PerfilPage {
       allowEditing: false,
       resultType: CameraResultType.Uri,
     });
-
+  
     this.imagen = image.webPath;
-
-    // Guardar la imagen en el almacenamiento local
+  
+    const nombreUsuario = localStorage.getItem('nombreUsuario');
+    if (nombreUsuario) {
+      // Obtén el ID del usuario
+      const usuario = await this.bd.obtenerUsuarioPorNombre(nombreUsuario);
+      const id = usuario.id_usuario;
+  
+      // Usa el nuevo método para actualizar solo la foto
+      this.bd.actualizarFotoUsuario(id, this.imagen);
+    }
+  
+    // Guarda la imagen en localStorage
     localStorage.setItem('profilePicture', this.imagen);
   };
 
-  // Método para cargar la imagen desde localStorage al entrar en la página
+  // Método para cargar la imagen desde la base de datos o localStorage al entrar en la página
   loadProfilePicture() {
     const savedImage = localStorage.getItem('profilePicture');
     if (savedImage) {
       this.imagen = savedImage;
+    // } else if (this.usuario && this.usuario.foto) {
+    //   this.imagen = this.usuario.foto;
     }
   }
 }

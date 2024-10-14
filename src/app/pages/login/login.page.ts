@@ -19,11 +19,20 @@ export class LoginPage {
   constructor(private bd: ServicebdService, private router: Router, private alertController: AlertController) {}
 
   async login() {
-    const isValid = await this.bd.verificarUsuario(this.datosLogin.usuario, this.datosLogin.contrasena);
-    if (isValid) {
-      // Almacenar el nombre de usuario y redirigir al home
-      localStorage.setItem('nombreUsuario', this.datosLogin.usuario);
-      this.router.navigate(['/home']);
+    // Verificar usuario y recibir los detalles del mismo (incluyendo id_rol)
+    const usuario = await this.bd.verificarUsuario(this.datosLogin.usuario, this.datosLogin.contrasena);
+    
+    if (usuario) {
+      // Almacenar el nombre de usuario y su id_rol en localStorage
+      localStorage.setItem('nombreUsuario', usuario.nombre);
+      localStorage.setItem('id_rol', usuario.id_rol.toString());
+
+      // Redirigir según el rol
+      if (usuario.id_rol == 1) {
+        this.router.navigate(['/admin']); // Redirige a la página de administración si es admin
+      } else if (usuario.id_rol == 2) {
+        this.router.navigate(['/home']); // Redirige al home si es usuario normal
+      }
     } else {
       const alert = await this.alertController.create({
         header: 'Error',

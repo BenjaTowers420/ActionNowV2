@@ -35,7 +35,7 @@ tablaRol: string = "CREATE TABLE IF NOT EXISTS rol (id_rol INTEGER PRIMARY KEY, 
 
 //Tablas con Clave
 
-tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY, nombre VARCHAR(100) NOT NULL, estatura INTEGER, peso INTEGER, objetivo VARCHAR(60), id_rol INTEGER NOT NULL, contrasena VARCHAR(150) NOT NULL, FOREIGN KEY (id_rol) REFERENCES rol(id_rol));";
+tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(100) NOT NULL, estatura INTEGER, peso INTEGER, imc VARCHAR(40), objetivo VARCHAR(60), id_rol INTEGER NOT NULL, contrasena VARCHAR(150) NOT NULL, foto VARCHAR(200), FOREIGN KEY (id_rol) REFERENCES rol(id_rol));";
 
 // tablaAyuda: string = 
 //     "CREATE TABLE IF NOT EXISTS ayuda (" +
@@ -65,7 +65,7 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
   registroRol: string = "INSERT OR IGNORE INTO rol (id_rol, nombre_rol) VALUES (1, 'administrador'), (2, 'usuario')";
     
 
-  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, objetivo, id_rol, contrasena) VALUES(1, 'Josue Machaca', 1, 1, '', 1, 'ASD12345'), (2, 'Don Evo', 170, 500, 'Bajar de peso', 2, 'ASD12345');";
+  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, imc, objetivo, id_rol, contrasena, foto) VALUES(1, 'Josue Machaca', 1, 1, '1', '', 1, 'ASD12345', 'https://pics.filmaffinity.com/206770211157388-nm_200.jpg'), (2, 'Don Evo', 170, 500,'500', 'Bajar de peso', 2, 'ASD12345', 'https://static.theclinic.cl/media/2009/04/evomorales.jpg');";
 
   //POr si da error al agregar datos
   // borrarTablad:string="DROP TABLE usuario;";
@@ -212,17 +212,53 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
     });
   }
 
-  verificarUsuario(nombre: string, contrasena: string): Promise<boolean> {
-    return this.database.executeSql('SELECT * FROM usuario WHERE nombre = ? AND contrasena = ?', [nombre, contrasena]).then(res => {
+  verificarUsuario(nombre: string, contrasena: string) {
+    return this.database.executeSql('SELECT * FROM usuario WHERE nombre = ? AND contrasena = ?', [nombre, contrasena])
+      .then(res => {
+        if (res.rows.length > 0) {
+          // Si se encuentra el usuario, devolver sus datos, incluido el id_rol
+          return {
+            id_usuario: res.rows.item(0).id_usuario,
+            nombre: res.rows.item(0).nombre,
+            id_rol: res.rows.item(0).id_rol // Aquí obtenemos el rol del usuario
+          };
+        }
+        return null; // Si no se encuentra, devolver null
+      });
+  } 
+
+  actualizarDatosUsuario(id: string, estatura: number, peso: number, imc: number, objetivo: string) {
+    return this.database.executeSql('UPDATE usuario SET estatura = ?, peso = ?, imc = ?, objetivo = ? WHERE id_usuario = ?', [estatura, peso, imc, objetivo, id])
+      .then(res => {
+        this.presentAlert('Actualizar', 'Datos del usuario actualizados');
+      }).catch(e => {
+        this.presentAlert('Error', 'Error al actualizar los datos: ' + JSON.stringify(e));
+      });
+  }
+
+  obtenerUsuarioPorNombre(nombre: string): Promise<any> {
+    return this.database.executeSql('SELECT * FROM usuario WHERE nombre = ?', [nombre]).then(res => {
       if (res.rows.length > 0) {
-        return true;  
-      } else {
-        return false; 
+        return {
+          id_usuario: res.rows.item(0).id_usuario,
+          nombre: res.rows.item(0).nombre,
+          estatura: res.rows.item(0).estatura,
+          peso: res.rows.item(0).peso,
+          imc: res.rows.item(0).imc,
+        };
       }
-    }).catch(e => {
-      this.presentAlert('Error', 'Error al verificar: ' + JSON.stringify(e));
-      return false;
+      return null;
     });
-  }  
+  }
+  
+  actualizarFotoUsuario(id: string, foto: string) {
+    return this.database.executeSql('UPDATE usuario SET foto = ? WHERE id_usuario = ?', [foto, id])
+      .then(res => {
+        this.presentAlert('Actualizar', 'Foto del usuario actualizada');
+      }).catch(e => {
+        this.presentAlert('Error', 'Error al actualizar la foto: ' + JSON.stringify(e));
+      });
+  }
+  
 
 }
