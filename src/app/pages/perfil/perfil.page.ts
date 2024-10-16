@@ -50,7 +50,8 @@ export class PerfilPage {
       const id = usuario.id_usuario;
   
       // Usa el nuevo método para actualizar solo la foto
-      this.bd.actualizarFotoUsuario(id, this.imagen);
+      await this.bd.actualizarFotoUsuario(id, this.imagen);
+      this.usuario.foto = this.imagen;
     }
   
     // Guarda la imagen en localStorage
