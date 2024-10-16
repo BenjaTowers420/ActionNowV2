@@ -11,22 +11,6 @@ export class HomePage implements OnInit {
 
   constructor( private router: Router) {}
 
-  irRutina() {
-    this.router.navigate(['/rutinas'])
-  }
-
-  irContador() {
-    this.router.navigate(['/contador-calorias'])
-  }
-
-  irIMC() {
-    this.router.navigate(['/cal-imc'])
-  }
-
-  irProductos() {
-    this.router.navigate(['/productos'])
-  }
-
   ngOnInit() {
   }
 

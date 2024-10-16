@@ -29,9 +29,9 @@ export class LoginPage {
 
       // Redirigir según el rol
       if (usuario.id_rol == 1) {
-        this.router.navigate(['/admin']); // Redirige a la página de administración si es admin
+        this.router.navigate(['/admin']); 
       } else if (usuario.id_rol == 2) {
-        this.router.navigate(['/home']); // Redirige al home si es usuario normal
+        this.router.navigate(['/home']); 
       }
     } else {
       const alert = await this.alertController.create({

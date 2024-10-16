@@ -8,21 +8,20 @@ import { ServicebdService } from 'src/app/services/servicebd.service';
   styleUrls: ['./perfil.page.scss'],
 })
 export class PerfilPage {
-  perfil = {
-    nombre: '',
-    edad: 0,
-  };
 
   usuario: any;
 
   imagen: any;
 
   constructor(private bd: ServicebdService) {
-    this.loadProfilePicture(); // Cargar la imagen al iniciar la página
+    this.loadProfilePicture(); 
   }
-  ngOnInit() {
+  // ngOnInit() {
+  //   this.cargarDatosUsuario();
+  // }
+  ionViewWillEnter() {
+    // Esto se ejecuta cada vez que la página se carga
     this.cargarDatosUsuario();
-    this.loadProfilePicture();
   }
 
   cargarDatosUsuario() {
@@ -63,8 +62,8 @@ export class PerfilPage {
     const savedImage = localStorage.getItem('profilePicture');
     if (savedImage) {
       this.imagen = savedImage;
-    // } else if (this.usuario && this.usuario.foto) {
-    //   this.imagen = this.usuario.foto;
+    } else if (this.usuario && this.usuario.foto) {
+      this.imagen = this.usuario.foto;
     }
   }
 }

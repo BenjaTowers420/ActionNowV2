@@ -27,11 +27,6 @@ export class AppComponent {
     
   }
 
-  irPerfil() {
-    this.router.navigate(['/perfil']);
-  }
-  
-
   closeMenu(){
     this.menu.close();
   }
@@ -41,10 +36,18 @@ export class AppComponent {
     this.menu.close();
   }
 
+  // cerrarSesion() {
+  //   // Limpiar datos del perfil y nombre del usuario logeado
+  //   localStorage.removeItem('nombreUsuario'); // Remover el nombre de usuario almacenado
+  //   localStorage.removeItem('profilePicture'); // Remover la foto de perfil almacenada
+  //   localStorage.removeItem('objetivo'); // Remover el objetivo si está almacenado
+  //   this.router.navigate(['/login']); // Redirigir al login
+  // }
   cerrarSesion() {
     localStorage.removeItem('nombreUsuario');
     this.nombreUsuario = '';
-
-    this.router.navigate(['/login']);
+    localStorage.removeItem('profilePicture'); // Remover la foto de perfil almacenada
+    localStorage.removeItem('objetivo'); // Remover el objetivo si está almacenado
+    this.router.navigate(['/login']); // Redirigir al login
   }
 }
