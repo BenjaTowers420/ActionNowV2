@@ -1,31 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Encuentra tu rutina ideal</ion-title>
+    <ion-title>Recomendación de Rutina</ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <ion-card *ngIf="rutina">
+    <ion-card-header>
+      <ion-card-title>{{ rutina.nombre_rutina }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ rutina.descripcion }}</p>
+      <p><strong>Tipo de Rutina:</strong> {{ rutina.tipo_rutina }}</p>
+      <p><strong>Tipo de Usuario:</strong> {{ rutina.tipo_usuario }}</p>
+    </ion-card-content>
+  </ion-card>
 
-<ion-content padding>
-  <ion-item>
-    <ion-label>¿Cual es tu meta?</ion-label>
-    <ion-select [(ngModel)]="selectedOption" (ionChange)="updateRoutine()">
-      <ion-select-option value="opcion1">Ganar masa muscular</ion-select-option>
-      <ion-select-option value="opcion2">Perder peso</ion-select-option>
-      <ion-select-option value="opcion3">Solo por salud</ion-select-option>
-    </ion-select>
-  </ion-item>
- 
-  <ion-item>
-    <ion-label>{{ routineMessage }}</ion-label>
-  </ion-item>
-
-
-  <ion-button class="btn-rutinas" expand="block" color="warning" [routerLink]="'/rutinas'" >Ver tu Rutinas</ion-button>
+  <ion-button (click)="asignarRutina()">Obtener Rutina Recomendada</ion-button>
 </ion-content>
-
-<ion-footer>
-  <ion-button class="btn-volver" color="dark" [routerLink]="'/home'" >Volver</ion-button>
-</ion-footer>
-
-
-

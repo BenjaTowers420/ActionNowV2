@@ -20,46 +20,15 @@ export class ServicebdService {
   //tablas sin Clave Foranea
 tablaRol: string = "CREATE TABLE IF NOT EXISTS rol (id_rol INTEGER PRIMARY KEY, nombre_rol VARCHAR(20) NOT NULL);";
 
-// tablaSuplemento: string = 
-//   "CREATE TABLE IF NOT EXISTS suplemento (" +
-//   "id_suplemento INTEGER PRIMARY KEY, " +
-//   "nombre_sup VARCHAR(20) NOT NULL, " +
-//   "descripcion_sup VARCHAR(500) NOT NULL);";
-
-// tablaAlimento: string = 
-//   "CREATE TABLE IF NOT EXISTS alimento (" +
-//   "id_alimento INTEGER PRIMARY KEY, " +
-//   "nom_alimento VARCHAR(20) NOT NULL, " +
-//   "calorias_alim INTEGER NOT NULL);";
 
 
 //Tablas con Clave
 
 tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(100) NOT NULL, estatura INTEGER, peso INTEGER, imc VARCHAR(40), objetivo VARCHAR(60), id_rol INTEGER NOT NULL, contrasena VARCHAR(150) NOT NULL, foto VARCHAR(200), FOREIGN KEY (id_rol) REFERENCES rol(id_rol));";
 
-// tablaAyuda: string = 
-//     "CREATE TABLE IF NOT EXISTS ayuda (" +
-//     "id_ayuda INTEGER PRIMARY KEY, " +
-//     "asunto VARCHAR(30) NOT NULL, " +
-//     "mensaje VARCHAR(200) NOT NULL, " +
-//     "id_usuario INTEGER, " +
-//     "FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario));";
 
-// tablaRutina: string = 
-//     "CREATE TABLE IF NOT EXISTS rutina (" +
-//     "id_rutina INTEGER PRIMARY KEY, " +
-//     "nombre_rutina VARCHAR(30) NOT NULL, " +
-//     "descripcion VARCHAR(2000) NOT NULL, " +
-//     "id_usuario INTEGER, " +
-//     "FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario));";
+tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIMARY KEY, nombre_rutina VARCHAR(30) NOT NULL, descripcion VARCHAR(2000) NOT NULL, tipo_rutina VARCHAR(80) NOT NULL, tipo_usuario VARCHAR(80) NOT NULL);";
 
-// tablaEjercicio: string = 
-//     "CREATE TABLE IF NOT EXISTS ejercicio (" +
-//     "id_ejercicio INTEGER PRIMARY KEY, " +
-//     "nom_ejercicio VARCHAR(30) NOT NULL, " +
-//     "descripcion VARCHAR(60) NOT NULL, " +
-//     "id_rutina INTEGER, " +
-//     "FOREIGN KEY (id_rutina) REFERENCES rutina(id_rutina));";
 
   //INSERT
   registroRol: string = "INSERT OR IGNORE INTO rol (id_rol, nombre_rol) VALUES (1, 'administrador'), (2, 'usuario')";
@@ -67,12 +36,23 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
 
   registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, imc, objetivo, id_rol, contrasena, foto) VALUES(1, 'Josue Machaca', 1, 1, '1', '', 1, 'ASD12345', 'https://pics.filmaffinity.com/206770211157388-nm_200.jpg'), (2, 'Don Evo', 170, 500,'500', 'Bajar de peso', 2, 'ASD12345', 'https://static.theclinic.cl/media/2009/04/evomorales.jpg');";
 
+  registroRutina: string = "INSERT OR IGNORE INTO rutina (id_rutina, nombre_rutina, descripcion, tipo_rutina, tipo_usuario) VALUES " +
+                         "(1, 'Plan A', 'Rutina de hipertrofia', 'hipertrofia', 'flaco'), " +
+                         "(2, 'Plan B', 'Rutina de hipertrofia', 'hipertrofia', 'normal'), " +
+                         "(3, 'Plan C', 'Rutina de hipertrofia', 'hipertrofia', 'sobrepeso'), " +
+                         "(4, 'Plan D', 'Rutina cardiovascular', 'cardio', 'flaco'), " +
+                         "(5, 'Plan E', 'Rutina cardiovascular', 'cardio', 'normal'), " +
+                         "(6, 'Plan F', 'Rutina cardiovascular', 'cardio', 'sobrepeso'), " +
+                         "(7, 'Plan G', 'Rutina de hipertrofia', 'acondicionamiento', 'flaco'), " +
+                         "(8, 'Plan H', 'Rutina de hipertrofia', 'acondicionamiento', 'normal'), " +
+                         "(9, 'Plan J', 'Rutina de hipertrofia', 'acondicionamiento', 'sobrepeso');";
   //POr si da error al agregar datos
   // borrarTablad:string="DROP TABLE usuario;";
 
   //GUARDAR DATOS DE LAS CONSULTAS EN LAS TABLAS
   listadoRol = new BehaviorSubject([]);
   listadoUsuarios = new BehaviorSubject ([]);
+  listadoRutinas = new BehaviorSubject ([]);
 
   //variable para el status de la Base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -99,6 +79,10 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
 
   fetchUsuarios(): Observable<Usuarios[]>{
     return this.listadoUsuarios.asObservable();
+  }
+
+  fetchRutinas(): Observable<Usuarios[]>{
+    return this.listadoRutinas.asObservable();
   }
 
   dbState(){
@@ -130,14 +114,17 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
 
       // Eliminar la tabla si ya existe
       //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS rutina', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS rol', []);
 
       //ejecuto la creación de Tablas
       await this.database.executeSql(this.tablaRol, []);
+      await this.database.executeSql(this.tablaRutina, []);
       await this.database.executeSql(this.tablaUsuario, []);
 
       //ejecuto los insert por defecto en el caso que existan
       await this.database.executeSql(this.registroRol, []);
+      await this.database.executeSql(this.registroRutina, []);
       await this.database.executeSql(this.registroUsuario, []);
 
       this.seleccionarUsuarios();
@@ -250,6 +237,12 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
       return null;
     });
   }
+
+  async verificarUsuarioExistente(nombre: string): Promise<boolean> {
+    const usuario = await this.obtenerUsuarioPorNombre(nombre);
+    return usuario !== null;
+  }
+  
   
   actualizarFotoUsuario(id: string, foto: string) {
     return this.database.executeSql('UPDATE usuario SET foto = ? WHERE id_usuario = ?', [foto, id])
@@ -260,5 +253,4 @@ tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER P
       });
   }
   
-
 }

@@ -5,18 +5,16 @@
 </ion-header>
 
 
-
-<ion-item>
-  <ion-label>Objetivo</ion-label>
-  <ion-select [(ngModel)]="objetivo">
-    <ion-select-option value="Ganar masa muscular">Ganar masa muscular</ion-select-option>
-    <ion-select-option value="Perder peso">Perder peso</ion-select-option>
-    <ion-select-option value="Salud">Salud</ion-select-option>
-  </ion-select>
-</ion-item>
-
-
 <ion-content>
+  <ion-item>
+    <ion-label>Objetivo</ion-label>
+    <ion-select [(ngModel)]="objetivo">
+      <ion-select-option value="Ganar masa muscular">Ganar masa muscular</ion-select-option>
+      <ion-select-option value="Perder peso">Perder peso</ion-select-option>
+      <ion-select-option value="Salud">Salud</ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <ion-item class="container">
     <ion-label position="floating">Altura (cm)</ion-label>
     <ion-input type="number" [(ngModel)]="estatura"></ion-input>
@@ -31,7 +29,7 @@
 
 
   <div class="btn-imc">
-    <ion-button expand="block" class="btn-cal" color="warning" (click)="calcularIMC()">Calcular IMC</ion-button>
+    <ion-button expand="block" class="btn-cal" color="warning" (click)="calcularIMC()">Tu Rutina!!</ion-button>
   </div>
 
 

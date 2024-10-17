@@ -44,10 +44,8 @@ export class AppComponent {
   //   this.router.navigate(['/login']); // Redirigir al login
   // }
   cerrarSesion() {
-    localStorage.removeItem('nombreUsuario');
-    this.nombreUsuario = '';
-    localStorage.removeItem('profilePicture'); // Remover la foto de perfil almacenada
-    localStorage.removeItem('objetivo'); // Remover el objetivo si está almacenado
-    this.router.navigate(['/login']); // Redirigir al login
+    localStorage.clear(); // Limpia todos los datos almacenados en el LocalStorage
+    this.nombreUsuario = ''; // Limpia el nombre de usuario en el componente principal
+    this.router.navigate(['/login']); 
   }
 }

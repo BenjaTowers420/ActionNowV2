@@ -33,27 +33,40 @@ export class RegistroPage {
   }
 
 
-  enviarFormulario() {
+  async enviarFormulario() {
     const mayusReq = /[A-Z]/;
     const numReq = /[0-9]/;
-
+  
     if (!this.datosRegistro.usuario) {
-      this.mostrarAlerta('Por favor, ingrese un usuario válido.');
-    } else if (this.datosRegistro.contrasena.length < 8 && !mayusReq.test(this.datosRegistro.contrasena) && !numReq.test(this.datosRegistro.contrasena)) {
-      this.mostrarAlerta('La contraseña debe contener al menos 8 caracteres, una mayúscula y un número');
-    }else if (this.datosRegistro.contrasena.length < 8) {
-      this.mostrarAlerta('La contraseña debe tener al menos 8 caracteres.');
-    } else if (!mayusReq.test(this.datosRegistro.contrasena) && !numReq.test(this.datosRegistro.contrasena)) {
-      this.mostrarAlerta('La contraseña debe contener al menos una mayúscula y un número');
-    } else if (!mayusReq.test(this.datosRegistro.contrasena )) {
-      this.mostrarAlerta('La contraseña debe contener almenos una mayuscula');
-    }  else if (!numReq.test(this.datosRegistro.contrasena )) {
-      this.mostrarAlerta('La contraseña debe contener almenos un numero');
-    }   else if (this.datosRegistro.contrasena !== this.datosRegistro.confirmarContrasena) {
-      this.mostrarAlerta('Las contraseñas no coinciden.');
-    }  else {
-      this.bd.registrarUsuario(this.datosRegistro.usuario, this.datosRegistro.contrasena, this.id_rol)
+      return this.mostrarAlerta('Por favor, ingrese un usuario válido.');
+    } 
+  
+    if (this.datosRegistro.contrasena.length < 8) {
+      return this.mostrarAlerta('La contraseña debe tener al menos 8 caracteres.');
+    }
+  
+    if (!mayusReq.test(this.datosRegistro.contrasena)) {
+      return this.mostrarAlerta('La contraseña debe contener al menos una mayúscula.');
+    } 
+  
+    if (!numReq.test(this.datosRegistro.contrasena)) {
+      return this.mostrarAlerta('La contraseña debe contener al menos un número.');
+    } 
+  
+    if (this.datosRegistro.contrasena !== this.datosRegistro.confirmarContrasena) {
+      return this.mostrarAlerta('Las contraseñas no coinciden.');
+    } 
+
+    const existeUsuario = await this.bd.verificarUsuarioExistente(this.datosRegistro.usuario);
+    if (existeUsuario) {
+      return this.mostrarAlerta('El usuario ya existe. Por favor, elija otro.');
+  }
+  
+    try {
+      await this.bd.registrarUsuario(this.datosRegistro.usuario, this.datosRegistro.contrasena, this.id_rol);
       this.router.navigate(['/login']);
+    } catch (error) {
+      this.mostrarAlerta('Error al registrar el usuario. Inténtelo de nuevo.');
     }
   }
 }

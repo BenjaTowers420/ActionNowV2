@@ -46,10 +46,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/registro/registro.module').then( m => m.RegistroPageModule)
   },
   {
-    path: 'sponsors',
-    loadChildren: () => import('./pages/sponsors/sponsors.module').then( m => m.SponsorsPageModule)
-  },
-  {
     path: 'notfound',
     loadChildren: () => import('./pages/notfound/notfound.module').then( m => m.NotfoundPageModule)
   },

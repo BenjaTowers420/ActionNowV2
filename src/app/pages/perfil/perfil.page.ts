@@ -9,62 +9,100 @@ import { ServicebdService } from 'src/app/services/servicebd.service';
 })
 export class PerfilPage {
 
-  usuario: any;
+  usuario: any = {
+    nombre: '',
+    estatura: 0,
+    peso: 0,
+    imc: '',
+    objetivo: '',
+    foto: ''
+  };
 
   imagen: any;
 
-  constructor(private bd: ServicebdService) {
-    this.loadProfilePicture(); 
-  }
-  // ngOnInit() {
-  //   this.cargarDatosUsuario();
-  // }
-  ionViewWillEnter() {
-    // Esto se ejecuta cada vez que la página se carga
+  constructor(private bd: ServicebdService) {}
+
+  //ngOnInit() {
+    ionViewWillEnter() {
+    // Cargar el perfil del usuario actual
+    this.resetPerfil();
     this.cargarDatosUsuario();
+  }
+  
+  ngOnDestroy() {
+    // Limpiar los datos del perfil para evitar mostrar datos del usuario anterior
+    this.usuario = {
+      nombre: '',
+      estatura: 0,
+      peso: 0,
+      imc: '',
+      objetivo: '',
+      foto: ''
+    };
+    this.imagen = '';  // También limpia la imagen del perfil
+  }
+
+  resetPerfil() {
+    this.usuario = {
+      nombre: '',
+      estatura: 0,
+      peso: 0,
+      imc: '',
+      objetivo: '',
+      foto: ''
+    };
+    this.imagen = '';
   }
 
   cargarDatosUsuario() {
+    // Restablecer los datos del perfil antes de cargar los nuevos
+    this.usuario = {
+      nombre: '',
+      estatura: 0,
+      peso: 0,
+      imc: '',
+      objetivo: '',
+      foto: ''
+    };
+  
     const nombreUsuario = localStorage.getItem('nombreUsuario');
     if (nombreUsuario) {
       this.bd.obtenerUsuarioPorNombre(nombreUsuario).then(usuario => {
-        this.usuario = usuario;
+        if (usuario) {
+          this.usuario = usuario;
+          this.imagen = this.usuario.foto;  // Actualizar la imagen del perfil
+        }
       });
     }
   }
 
-  // Método para tomar la foto y guardar la ruta en localStorage
-  takePicture = async () => {
+  // Método para tomar la foto y actualizarla en la base de datos
+  async takePicture() {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
     });
-  
+
     this.imagen = image.webPath;
-  
+
     const nombreUsuario = localStorage.getItem('nombreUsuario');
     if (nombreUsuario) {
-      // Obtén el ID del usuario
       const usuario = await this.bd.obtenerUsuarioPorNombre(nombreUsuario);
       const id = usuario.id_usuario;
-  
-      // Usa el nuevo método para actualizar solo la foto
-      await this.bd.actualizarFotoUsuario(id, this.imagen);
-      this.usuario.foto = this.imagen;
-    }
-  
-    // Guarda la imagen en localStorage
-    localStorage.setItem('profilePicture', this.imagen);
-  };
 
-  // Método para cargar la imagen desde la base de datos o localStorage al entrar en la página
+      // Actualizar la foto en la base de datos
+      await this.bd.actualizarFotoUsuario(id, this.imagen);
+      this.usuario.foto = this.imagen;  // Reflejar el cambio en la UI
+    }
+  }
+
+  // Método para cargar la imagen desde la base de datos al entrar en la página
   loadProfilePicture() {
-    const savedImage = localStorage.getItem('profilePicture');
-    if (savedImage) {
-      this.imagen = savedImage;
-    } else if (this.usuario && this.usuario.foto) {
+    if (this.usuario && this.usuario.foto) {
       this.imagen = this.usuario.foto;
+    } else {
+      this.imagen = 'https://as2.ftcdn.net/jpg/02/15/84/43/220_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg'; // Ruta de una imagen por defecto
     }
   }
 }
