@@ -5,9 +5,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">comentarios</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-item>
+    <ion-input label="Motivo" labelPlacement="floating" placeholder="Ingrese el motivo" [(ngModel)]="motivo"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Comentario" labelPlacement="floating" placeholder="Ingrese su comentario"  [(ngModel)]="texto"></ion-input>
+  </ion-item>
+  <ion-button color="success" [routerLink]="'/home'" (click)="insertar()">Enviar comentario</ion-button>
 </ion-content>

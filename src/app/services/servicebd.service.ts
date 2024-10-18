@@ -290,5 +290,14 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
 
     })
   }
+
+  insertarComentario(nombre_usuario:string, motivo:string, texto:string){
+    return this.database.executeSql('INSERT INTO comentario(nombre_usuario,motivo,texto) VALUES (?,?,?)',[nombre_usuario, motivo, texto]).then(res=>{
+      this.presentAlert("Mensaje enviado","Gracias por sus comentarios!!");
+      this.seleccionarComentarios();
+    }).catch(e=>{
+      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+    })
+  }
   
 }

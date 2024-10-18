@@ -10,6 +10,8 @@ import { NavigationEnd, Router } from '@angular/router';
 export class AppComponent {
   nombreUsuario: string = '';
 
+  isAdmin: boolean = false;
+
   constructor(private menu: MenuController, private router: Router, private alertController: AlertController) {
     // Escuchar los cambios de navegación para actualizar el nombre del usuario
     this.router.events.subscribe(event => {
@@ -17,6 +19,10 @@ export class AppComponent {
         this.nombreUsuario = localStorage.getItem('nombreUsuario') || '';
       }
     });
+
+    // Verificar si el usuario es admin
+    const idRol = localStorage.getItem('id_rol');
+    this.isAdmin = idRol === '1';
   }
   
 
@@ -24,6 +30,12 @@ export class AppComponent {
   ngOnInit() {
     // Cargar el nombre del usuario al iniciar la app
     this.nombreUsuario = localStorage.getItem('nombreUsuario') || '';
+    this.isAdmin = localStorage.getItem('id_rol') === '1';
+
+  // Escuchar el evento cuando el usuario inicia sesión
+  window.addEventListener('userLoggedIn', () => {
+    this.isAdmin = localStorage.getItem('id_rol') === '1';
+  });
     
   }
 
@@ -36,16 +48,10 @@ export class AppComponent {
     this.menu.close();
   }
 
-  // cerrarSesion() {
-  //   // Limpiar datos del perfil y nombre del usuario logeado
-  //   localStorage.removeItem('nombreUsuario'); // Remover el nombre de usuario almacenado
-  //   localStorage.removeItem('profilePicture'); // Remover la foto de perfil almacenada
-  //   localStorage.removeItem('objetivo'); // Remover el objetivo si está almacenado
-  //   this.router.navigate(['/login']); // Redirigir al login
-  // }
   cerrarSesion() {
-    localStorage.clear(); // Limpia todos los datos almacenados en el LocalStorage
-    this.nombreUsuario = ''; // Limpia el nombre de usuario en el componente principal
+    localStorage.clear(); 
+    this.nombreUsuario = ''; 
+    this.isAdmin = false;
     this.router.navigate(['/login']); 
   }
 }

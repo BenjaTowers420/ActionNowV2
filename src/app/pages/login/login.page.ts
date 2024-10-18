@@ -27,6 +27,8 @@ export class LoginPage {
       localStorage.setItem('nombreUsuario', usuario.nombre);
       localStorage.setItem('id_rol', usuario.id_rol.toString());
 
+      window.dispatchEvent(new Event('userLoggedIn')); 
+
       // Redirigir según el rol
       if (usuario.id_rol == 1) {
         this.router.navigate(['/admin']); 
