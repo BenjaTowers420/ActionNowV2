@@ -4,17 +4,39 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card *ngIf="rutina">
+<ion-content class="ion-padding">
+
+  <ion-card>
     <ion-card-header>
-      <ion-card-title>{{ rutina.nombre_rutina }}</ion-card-title>
+      <ion-card-title>Rutina Recomendada</ion-card-title>
     </ion-card-header>
+
     <ion-card-content>
-      <p>{{ rutina.descripcion }}</p>
-      <p><strong>Tipo de Rutina:</strong> {{ rutina.tipo_rutina }}</p>
-      <p><strong>Tipo de Usuario:</strong> {{ rutina.tipo_usuario }}</p>
+      <p><strong>Nombre del Usuario:</strong> {{ usuario.nombre }}</p>
+      <p><strong>IMC:</strong> {{ usuario.imc | number:'1.1-1' }}</p>
+      <p><strong>Objetivo:</strong> {{ usuario.objetivo }}</p>
+      <p><strong>Rutina Asignada:</strong> {{ rutina }}</p>
     </ion-card-content>
   </ion-card>
 
-  <ion-button (click)="asignarRutina()">Obtener Rutina Recomendada</ion-button>
+  <ion-list *ngIf="ejercicios.length > 0">
+    <ion-card *ngFor="let ejercicio of ejercicios">
+      <ion-card-header>
+        <ion-card-title>{{ ejercicio.nombre }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Repeticiones:</strong> {{ ejercicio.repeticiones }}</p>
+        <p>{{ ejercicio.descripcion }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <p *ngIf="ejercicios.length === 0">
+    No hay ejercicios disponibles para esta rutina.
+  </p>
+
+  <ion-button *ngIf="ejercicios.length === 0" expand="full" routerLink="/cal-imc">
+    Ir a Calcular IMC
+  </ion-button>
+
 </ion-content>

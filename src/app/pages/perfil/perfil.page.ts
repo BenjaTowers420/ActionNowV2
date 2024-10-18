@@ -19,27 +19,23 @@ export class PerfilPage {
   };
 
   imagen: any;
+  rutinaAsignada: string = '';
+
+  // Rutinas predefinidas
+  rutinaFlacos = 'Rutina Extreme PPL';
+  rutinaNormal = 'Rutina Cardiovascular X Deus';
+  rutinaGordos = 'Rutina Full cardio para Big Poppas';
+  noRutina = 'No hay rutina asignada'
 
   constructor(private bd: ServicebdService) {}
 
-  //ngOnInit() {
-    ionViewWillEnter() {
-    // Cargar el perfil del usuario actual
+  ionViewWillEnter() {
     this.resetPerfil();
     this.cargarDatosUsuario();
   }
   
   ngOnDestroy() {
-    // Limpiar los datos del perfil para evitar mostrar datos del usuario anterior
-    this.usuario = {
-      nombre: '',
-      estatura: 0,
-      peso: 0,
-      imc: '',
-      objetivo: '',
-      foto: ''
-    };
-    this.imagen = '';  // También limpia la imagen del perfil
+    this.resetPerfil();
   }
 
   resetPerfil() {
@@ -49,34 +45,43 @@ export class PerfilPage {
       peso: 0,
       imc: '',
       objetivo: '',
-      foto: ''
+      foto: '',
     };
     this.imagen = '';
   }
 
-  cargarDatosUsuario() {
-    // Restablecer los datos del perfil antes de cargar los nuevos
-    this.usuario = {
-      nombre: '',
-      estatura: 0,
-      peso: 0,
-      imc: '',
-      objetivo: '',
-      foto: ''
-    };
-  
+  async cargarDatosUsuario() {
     const nombreUsuario = localStorage.getItem('nombreUsuario');
     if (nombreUsuario) {
-      this.bd.obtenerUsuarioPorNombre(nombreUsuario).then(usuario => {
-        if (usuario) {
-          this.usuario = usuario;
-          this.imagen = this.usuario.foto;  // Actualizar la imagen del perfil
-        }
-      });
+      const usuario = await this.bd.obtenerUsuarioPorNombre(nombreUsuario);
+      if (usuario) {
+        this.usuario = usuario;
+        this.imagen = this.usuario.foto;
+        this.asignarRutina();
+      }
     }
   }
 
-  // Método para tomar la foto y actualizarla en la base de datos
+  // Función para asignar la rutina
+  asignarRutina() {
+    const imc = parseFloat(this.usuario.imc);
+
+    // Verificamos si el IMC es un número válido
+    if (isNaN(imc) || imc <= 0) {
+        this.rutinaAsignada = this.noRutina; 
+        return;
+    }
+
+    // Asignación de rutinas según el IMC
+    if (imc < 18.5) {
+        this.rutinaAsignada = this.rutinaFlacos;
+    } else if (imc < 24.9) {
+        this.rutinaAsignada = this.rutinaNormal;
+    } else {
+        this.rutinaAsignada = this.rutinaGordos;
+    }
+}
+
   async takePicture() {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -91,18 +96,16 @@ export class PerfilPage {
       const usuario = await this.bd.obtenerUsuarioPorNombre(nombreUsuario);
       const id = usuario.id_usuario;
 
-      // Actualizar la foto en la base de datos
       await this.bd.actualizarFotoUsuario(id, this.imagen);
-      this.usuario.foto = this.imagen;  // Reflejar el cambio en la UI
+      this.usuario.foto = this.imagen;
     }
   }
 
-  // Método para cargar la imagen desde la base de datos al entrar en la página
   loadProfilePicture() {
     if (this.usuario && this.usuario.foto) {
       this.imagen = this.usuario.foto;
     } else {
-      this.imagen = 'https://as2.ftcdn.net/jpg/02/15/84/43/220_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg'; // Ruta de una imagen por defecto
+      this.imagen = 'https://as2.ftcdn.net/jpg/02/15/84/43/220_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg';
     }
   }
 }

@@ -22,12 +22,10 @@
       </ion-card-content>
     </ion-card>
 
-  <ion-item lines="none">
-    <ion-label><strong>Rutina Asignada: </strong></ion-label>
-  </ion-item>
-  <ion-item>
-    <p>Descripcion: </p>
-  </ion-item>
+    <ion-item lines="none">
+      <ion-label><strong>Rutina Asignada: </strong>{{ rutinaAsignada }}</ion-label>
+    </ion-item>
+    
 
   <ion-button  color="warning" [routerLink]="'/recomendacion-rutina'">Ver tu rutina</ion-button>
 </ion-content>
