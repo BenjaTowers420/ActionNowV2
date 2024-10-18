@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Listado de Comentarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item-sliding *ngFor="let x of arregloComentario">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title><strong>Usuario: </strong>{{ x.nombre_usuario }}</ion-card-title>
+          <ion-card-subtitle><strong>Motivo: </strong>{{ x.motivo }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label style="word-wrap: break-word; white-space: normal;">{{ x.texto }}</ion-label>
+        </ion-card-content>
+      </ion-card>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

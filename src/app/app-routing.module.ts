@@ -70,6 +70,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modificar-usuario/modificar-usuario.module').then( m => m.ModificarUsuarioPageModule)
   },
   {
+    path: 'comentarios',
+    loadChildren: () => import('./pages/comentarios/comentarios.module').then( m => m.ComentariosPageModule)
+  },
+  {
+    path: 'listado-comentarios',
+    loadChildren: () => import('./pages/listado-comentarios/listado-comentarios.module').then( m => m.ListadoComentariosPageModule)
+  },
+  {
     path: '**', 
     redirectTo: 'notfound',
     pathMatch: 'full'

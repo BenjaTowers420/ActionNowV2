@@ -3,6 +3,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Rol } from './rol';
+import { Comentarios } from './comentarios';
 import { Usuarios } from './usuarios';
 
 @Injectable({
@@ -20,6 +21,8 @@ export class ServicebdService {
   //tablas sin Clave Foranea
 tablaRol: string = "CREATE TABLE IF NOT EXISTS rol (id_rol INTEGER PRIMARY KEY, nombre_rol VARCHAR(20) NOT NULL);";
 
+tablaComentario: string = "CREATE TABLE IF NOT EXISTS comentario (id_comentario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(100) NOT NULL, motivo VARCHAR(100) NOT NULL, texto VARCHAR(250) NOT NULL);";
+
 
 
 //Tablas con Clave
@@ -32,7 +35,8 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
 
   //INSERT
   registroRol: string = "INSERT OR IGNORE INTO rol (id_rol, nombre_rol) VALUES (1, 'administrador'), (2, 'usuario')";
-    
+  
+  registroComentario: string = "INSERT OR IGNORE INTO comentario (id_comentario, nombre_usuario, motivo, texto) VALUES (1, 'Joao Da Silva', 'prueba de comentario', 'esto es una prueba')";
 
   registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, imc, objetivo, id_rol, contrasena, foto) VALUES(1, 'Josue Machaca', 1, 1, '1', '', 1, 'ASD12345', 'https://pics.filmaffinity.com/206770211157388-nm_200.jpg'), (2, 'Don Evo', 170, 500,'500', 'Bajar de peso', 2, 'ASD12345', 'https://static.theclinic.cl/media/2009/04/evomorales.jpg');";
 
@@ -51,6 +55,7 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
 
   //GUARDAR DATOS DE LAS CONSULTAS EN LAS TABLAS
   listadoRol = new BehaviorSubject([]);
+  listadoComentarios = new BehaviorSubject([]);
   listadoUsuarios = new BehaviorSubject ([]);
   listadoRutinas = new BehaviorSubject ([]);
 
@@ -75,6 +80,10 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
 
   fetchRol(): Observable<Rol[]>{
     return this.listadoRol.asObservable();
+  }
+
+  fetchComentarios(): Observable<Comentarios[]>{
+    return this.listadoComentarios.asObservable();
   }
 
   fetchUsuarios(): Observable<Usuarios[]>{
@@ -114,20 +123,24 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
 
       // Eliminar la tabla si ya existe
       //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS comentario', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS rutina', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS rol', []);
 
       //ejecuto la creación de Tablas
       await this.database.executeSql(this.tablaRol, []);
+      await this.database.executeSql(this.tablaComentario, []);
       await this.database.executeSql(this.tablaRutina, []);
       await this.database.executeSql(this.tablaUsuario, []);
 
       //ejecuto los insert por defecto en el caso que existan
       await this.database.executeSql(this.registroRol, []);
+      await this.database.executeSql(this.registroComentario, []);
       await this.database.executeSql(this.registroRutina, []);
       await this.database.executeSql(this.registroUsuario, []);
 
       this.seleccionarUsuarios();
+      this.seleccionarComentarios();
       //modifico el estado de la Base de Datos
       this.isDBReady.next(true);
 
@@ -232,6 +245,7 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
           estatura: res.rows.item(0).estatura,
           peso: res.rows.item(0).peso,
           imc: res.rows.item(0).imc,
+          foto: res.rows.item(0).foto,
         };
       }
       return null;
@@ -251,6 +265,30 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
       }).catch(e => {
         this.presentAlert('Error', 'Error al actualizar la foto: ' + JSON.stringify(e));
       });
+  }
+
+  seleccionarComentarios(){
+    return this.database.executeSql('SELECT * FROM comentario', []).then(res=>{
+       //variable para almacenar el resultado de la consulta
+       let items: Comentarios[] = [];
+       //valido si trae al menos un registro
+       if(res.rows.length > 0){
+        //recorro mi resultado
+        for(var i=0; i < res.rows.length; i++){
+          //agrego los registros a mi lista
+          items.push({
+            id_comentario: res.rows.item(i).id_comentario,
+            nombre_usuario: res.rows.item(i).nombre_usuario,
+            motivo: res.rows.item(i).motivo,
+            texto: res.rows.item(i).texto
+          })
+        }
+        
+       }
+       //actualizar el observable
+       this.listadoComentarios.next(items as any);
+
+    })
   }
   
 }
