@@ -17,18 +17,33 @@
         #usuario="ngModel"
       ></ion-input>
     </ion-item>
+    <ion-text color="danger" *ngIf="usuario.invalid && (usuario.dirty || usuario.touched)">
+      El usuario es obligatorio.
+    </ion-text>
 
 
     <ion-item class="container">
-      <ion-input placeholder="Contraseña" type="password" name="contrasena" [(ngModel)]="datosRegistro.contrasena" required minlength="6" #contrasena="ngModel"
+      <ion-input placeholder="Contraseña" type="password" name="contrasena" [(ngModel)]="datosRegistro.contrasena" required minlength="8" #contrasena="ngModel" (ngModelChange)="validarContrasena()"
       ></ion-input>
     </ion-item>
+    <ion-text color="danger" *ngIf="contrasena.invalid && (contrasena.dirty || contrasena.touched)">
+      <ng-container *ngIf="contrasena.errors?.['required']">La contraseña es obligatoria.</ng-container><br>
+      <ng-container *ngIf="contrasena.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</ng-container><br>
+      <ng-container *ngIf="!mayusculaValida && contrasena.dirty">La contraseña debe contener al menos una mayúscula.</ng-container><br>
+      <ng-container *ngIf="!numeroValido && contrasena.dirty">La contraseña debe contener al menos un número.</ng-container>
+    </ion-text>
 
 
     <ion-item class="container">
       <ion-input placeholder="Confirme Contraseña" type="password" name="confirmarContrasena" [(ngModel)]="datosRegistro.confirmarContrasena" required #confirmarContrasena="ngModel"
       ></ion-input>
     </ion-item>
+    <ion-text color="danger" *ngIf="confirmarContrasena.invalid && (confirmarContrasena.dirty || confirmarContrasena.touched)">
+      El campo es obligatorio.
+    </ion-text><br>
+    <ion-text color="danger" *ngIf="datosRegistro.contrasena !== datosRegistro.confirmarContrasena && (confirmarContrasena.dirty || confirmarContrasena.touched)">
+      Las contraseñas no coinciden.
+    </ion-text>
 
 
     <ion-button class="btn-reg" color="warning" expand="block" type="submit">Registrarse</ion-button>

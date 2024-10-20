@@ -1,4 +1,4 @@
-<ion-menu contentId="main-content">
+<ion-menu contentId="main-content" *ngIf="!isLoginPage">
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -30,7 +30,7 @@
         <ion-label>Calcular IMC</ion-label>
       </ion-item>
 
-      <ion-item [routerDirection]="'root'" [routerLink]="'/rutinas'" (click)="closeMenu()">
+      <ion-item [routerDirection]="'root'" [routerLink]="'/recomendacion-rutina'" (click)="closeMenu()">
         <ion-icon class="icono" slot="start" name="barbell-outline"></ion-icon>
         <ion-label>Tu Rutina</ion-label>
       </ion-item>
@@ -41,9 +41,9 @@
         <ion-label>Contador de Calorias</ion-label>
       </ion-item>
 
-      <ion-item [routerDirection]="'root'" [routerLink]="'/recomendacion-rutina'" (click)="closeMenu()">
+      <ion-item [routerDirection]="'root'" [routerLink]="'/productos'" (click)="closeMenu()">
         <ion-icon class="icono" slot="start" name="albums-outline"></ion-icon>
-        <ion-label>Explorar Rutinas</ion-label>
+        <ion-label>Productos recomendados</ion-label>
       </ion-item>
 
       <ion-item [routerDirection]="'root'" [routerLink]="'/comentarios'" (click)="closeMenu()">
@@ -69,7 +69,7 @@
   </ion-content>
 </ion-menu>
 <div class="ion-page" id="main-content">
-  <ion-header>
+  <ion-header *ngIf="!isLoginPage">
     <ion-toolbar>
       <ion-title>{{ nombreUsuario }}</ion-title>
       <ion-title slot="end" class="logo-log">

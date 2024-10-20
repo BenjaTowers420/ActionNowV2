@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 
@@ -16,7 +17,7 @@ export class CalImcPage {
   nombreUsuario: string = localStorage.getItem('nombreUsuario') || '';
   id_usuario: string = ''; // El ID del usuario logeado 
 
-  constructor(private alertController: AlertController, private bd:ServicebdService){}
+  constructor(private alertController: AlertController, private bd:ServicebdService, private router: Router){}
 
   ngOnInit() {
     // Obtener ID del usuario logeado
@@ -36,8 +37,14 @@ export class CalImcPage {
   }
 
   calcularIMC() {
-    this.imc = this.peso / ((this.estatura / 100) * (this.estatura / 100));
-    this.bd.actualizarDatosUsuario(this.id_usuario, this.estatura, this.peso, this.imc, this.objetivo);
+    if (this.estatura <= 0 || this.peso <= 0) {
+      this.mostrarAlerta('Error', 'La estatura y el peso deben ser mayores a cero.');
+      return;
+    }
+
+    this.imc = parseFloat((this.peso / ((this.estatura / 100) ** 2)).toFixed(2));
+    this.bd.actualizarDatosUsuario(this.id_usuario, this.estatura, this.peso, this.imc, this.objetivo)
+    this.router.navigate(['/recomendacion-rutina']);
   }
 }
 

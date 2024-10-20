@@ -1,27 +1,26 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>Recuperar contraseña</ion-title>
+    <ion-title>Recuperar Contraseña</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <form (ngSubmit)="enviarFormulario()" #formularioRegistro="ngForm">
-    <ion-item class="container">
-      <ion-label>Usuario</ion-label>
-      <ion-input placeholder="Nombre de usuario" type="text" name="usuario" [(ngModel)]="datosRegistro.usuario"
-      required #usuario="ngModel"></ion-input>
+<ion-content>
+  <form (ngSubmit)="enviarFormulario()">
+    <ion-item>
+      <ion-label position="floating">Nombre de Usuario</ion-label>
+      <ion-input [(ngModel)]="datosRecuperacion.usuario" name="usuario" required></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Nueva Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="datosRecuperacion.contrasena" name="contrasena" required></ion-input>
     </ion-item>
 
-    <ion-item class="container">
-      <ion-label>Contraseña</ion-label>
-      <ion-input placeholder="Contraseña" type="password" name="contrasena" [(ngModel)]="datosRegistro.contrasena" required minlength="6" #contrasena="ngModel"></ion-input>
+    <ion-item>
+      <ion-label position="floating">Repetir Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="datosRecuperacion.confirmarContrasena" name="confirmarContrasena" required></ion-input>
     </ion-item>
 
-    <ion-item class="container">
-      <ion-label>Contraseña</ion-label>
-      <ion-input placeholder="Confirme Contraseña" type="password" name="confirmarContrasena" [(ngModel)]="datosRegistro.confirmarContrasena" required #confirmarContrasena="ngModel"></ion-input>
-    </ion-item>
-
-    <ion-button class="btn-reg" color="warning" expand="block" type="submit">Cambiar Contraseña</ion-button>
+    <ion-button color="warning" expand="block" type="submit">Actualizar Contraseña</ion-button>
   </form>
-  </ion-content>
+</ion-content>

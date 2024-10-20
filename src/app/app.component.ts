@@ -11,12 +11,15 @@ export class AppComponent {
   nombreUsuario: string = '';
 
   isAdmin: boolean = false;
+  isLoginPage: boolean = false;
+  excludedRoutes: string[] = ['/login', '/registro', '/cambiar-contra'];
 
   constructor(private menu: MenuController, private router: Router, private alertController: AlertController) {
     // Escuchar los cambios de navegación para actualizar el nombre del usuario
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.nombreUsuario = localStorage.getItem('nombreUsuario') || '';
+        this.isLoginPage = this.excludedRoutes.includes(this.router.url);
       }
     });
 

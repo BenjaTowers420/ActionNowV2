@@ -14,7 +14,6 @@
     <ion-card-content>
       <p><strong>Nombre del Usuario:</strong> {{ usuario.nombre }}</p>
       <p><strong>IMC:</strong> {{ usuario.imc | number:'1.1-1' }}</p>
-      <p><strong>Objetivo:</strong> {{ usuario.objetivo }}</p>
       <p><strong>Rutina Asignada:</strong> {{ rutina }}</p>
     </ion-card-content>
   </ion-card>
@@ -35,8 +34,8 @@
     No hay ejercicios disponibles para esta rutina.
   </p>
 
-  <ion-button *ngIf="ejercicios.length === 0" expand="full" routerLink="/cal-imc">
-    Ir a Calcular IMC
+  <ion-button *ngIf="ejercicios.length === 0" color="warning" expand="block" routerLink="/cal-imc">
+    Encuentra tu rutina!!
   </ion-button>
 
 </ion-content>

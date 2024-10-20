@@ -299,5 +299,14 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
       this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
     })
   }
+
+  cambiarContrasena(nombreUsuario: string, nuevaContrasena: string): Promise<any> {
+    return this.database.executeSql('UPDATE usuario SET contrasena = ? WHERE nombre = ?', [nuevaContrasena, nombreUsuario])
+      .then(res => {
+        this.presentAlert('Éxito', 'Contraseña cambiada con éxito');
+      }).catch(e => {
+        this.presentAlert('Error', 'Error al cambiar la contraseña: ' + JSON.stringify(e));
+      });
+  }
   
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { ServicebdService } from 'src/app/services/servicebd.service';
 
 @Component({
   selector: 'app-recuperar-contra',
@@ -8,19 +9,19 @@ import { AlertController, ToastController } from '@ionic/angular';
   styleUrls: ['./recuperar-contra.page.scss'],
 })
 export class RecuperarContraPage implements OnInit {
-  datosRegistro = {
+  datosRecuperacion = {
     usuario: '',
     contrasena: '',
     confirmarContrasena: ''
   };
 
-  constructor(private router: Router, private alertController: AlertController, private toastController: ToastController) { }
+  constructor(private router: Router, private alertController: AlertController, private toastController: ToastController, private bd: ServicebdService) { }
 
   ngOnInit() {}
 
-  async mostrarAlerta(header: string, mensaje: string) {
+  async mostrarAlerta(mensaje: string) {
     const alert = await this.alertController.create({
-      header,
+      header: 'Alerta',
       message: mensaje,
       buttons: ['OK']
     });
@@ -39,19 +40,40 @@ export class RecuperarContraPage implements OnInit {
     const mayusReq = /[A-Z]/;
     const numReq = /[0-9]/;
 
-    if (!this.datosRegistro.usuario) {
-      await this.mostrarAlerta('Error', 'Por favor, ingrese un usuario válido.');
-    } else if (this.datosRegistro.contrasena.length < 8) {
-      await this.mostrarAlerta('Error', 'La contraseña debe tener al menos 8 caracteres.');
-    } else if (!mayusReq.test(this.datosRegistro.contrasena)) {
-      await this.mostrarAlerta('Error', 'La contraseña debe contener al menos una mayúscula.');
-    } else if (!numReq.test(this.datosRegistro.contrasena)) {
-      await this.mostrarAlerta('Error', 'La contraseña debe contener al menos un número.');
-    } else if (this.datosRegistro.contrasena !== this.datosRegistro.confirmarContrasena) {
-      await this.mostrarAlerta('Error', 'Las contraseñas no coinciden.');
-    } else {
+    if (!this.datosRecuperacion.usuario) {
+      return this.mostrarAlerta('Por favor, ingrese un usuario válido.');
+    }
+
+    if (this.datosRecuperacion.contrasena.length < 8) {
+      return this.mostrarAlerta('La contraseña debe tener al menos 8 caracteres.');
+    }
+
+    if (!mayusReq.test(this.datosRecuperacion.contrasena)) {
+      return this.mostrarAlerta('La contraseña debe contener al menos una mayúscula.');
+    }
+
+    if (!numReq.test(this.datosRecuperacion.contrasena)) {
+      return this.mostrarAlerta('La contraseña debe contener al menos un número.');
+    }
+
+    if (this.datosRecuperacion.contrasena !== this.datosRecuperacion.confirmarContrasena) {
+      return this.mostrarAlerta('Las contraseñas no coinciden.');
+    }
+
+    // Verifica si el usuario existe
+    const existeUsuario = await this.bd.obtenerUsuarioPorNombre(this.datosRecuperacion.usuario);
+    if (!existeUsuario) {
+      return this.mostrarAlerta('El usuario no existe. Por favor, verifique el nombre de usuario.');
+    }
+
+    try {
+      await this.bd.cambiarContrasena(this.datosRecuperacion.usuario, this.datosRecuperacion.contrasena);
       await this.mostrarToast('Contraseña cambiada correctamente.');
       this.router.navigate(['/login']);
+    } catch (error) {
+      this.mostrarAlerta('Error al cambiar la contraseña. Inténtelo de nuevo.');
     }
   }
 }
+
+

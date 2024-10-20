@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 import { AlertController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 
@@ -16,7 +17,7 @@ export class LoginPage {
   };
 
 
-  constructor(private bd: ServicebdService, private router: Router, private alertController: AlertController) {}
+  constructor(private bd: ServicebdService, private router: Router, private alertController: AlertController, private vibration: Vibration) {}
 
   async login() {
     // Verificar usuario y recibir los detalles del mismo (incluyendo id_rol)
@@ -36,6 +37,7 @@ export class LoginPage {
         this.router.navigate(['/home']); 
       }
     } else {
+      this.vibration.vibrate(1000);
       const alert = await this.alertController.create({
         header: 'Error',
         message: 'Nombre de usuario o contraseña incorrectos',

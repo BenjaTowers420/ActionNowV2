@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 import { AlertController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 
@@ -17,11 +18,18 @@ export class RegistroPage {
   };
   id_rol: number = 2;
 
+  mayusculaValid: RegExp = /[A-Z]/;
+  numeroValid: RegExp = /[0-9]/;
 
-  constructor(private router: Router, private alertController: AlertController, private bd: ServicebdService) {}
+  mayusculaValida: boolean = false;
+  numeroValido: boolean = false;
+
+
+  constructor(private router: Router, private alertController: AlertController, private bd: ServicebdService, private vibration: Vibration) {}
 
 
   async mostrarAlerta(mensaje: string) {
+    this.vibration.vibrate(1000);
     const alert = await this.alertController.create({
       header: 'Error',
       message: mensaje,
@@ -32,6 +40,10 @@ export class RegistroPage {
     await alert.present();
   }
 
+  validarContrasena() {
+    this.mayusculaValida = this.mayusculaValid.test(this.datosRegistro.contrasena);
+    this.numeroValido = this.numeroValid.test(this.datosRegistro.contrasena);
+  }
 
   async enviarFormulario() {
     const mayusReq = /[A-Z]/;
