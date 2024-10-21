@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Listado de Productos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item-sliding *ngFor="let x of arregloProducto">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ x.nombre_producto }}</ion-card-title>
+          <ion-card-subtitle>{{ x.descripcion_producto }}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-img [src]="x.foto_producto" alt="Imagen del producto" style="width: 100%; max-width: 150px; height: auto; display: block; margin: auto;"></ion-img>
+        </ion-card-content>
+
+        <div style="display: flex; justify-content: flex-end; padding: 8px;">
+          <ion-button color="danger" (click)="eliminar(x)" fill="clear">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="agregar()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -26,20 +26,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/cal-imc/cal-imc.module').then( m => m.CalImcPageModule)
   },
   {
-    path: 'ayuda',
-    loadChildren: () => import('./pages/ayuda/ayuda.module').then( m => m.AyudaPageModule)
-  },
-  {
     path: 'contador-calorias',
     loadChildren: () => import('./pages/contador-calorias/contador-calorias.module').then( m => m.ContadorCaloriasPageModule)
   },
   {
     path: 'recomendacion-rutina',
     loadChildren: () => import('./pages/recomendacion-rutina/recomendacion-rutina.module').then( m => m.RecomendacionRutinaPageModule)
-  },
-  {
-    path: 'rutinas',
-    loadChildren: () => import('./pages/rutinas/rutinas.module').then( m => m.RutinasPageModule)
   },
   {
     path: 'registro',
@@ -78,10 +70,19 @@ const routes: Routes = [
     loadChildren: () => import('./pages/listado-comentarios/listado-comentarios.module').then( m => m.ListadoComentariosPageModule)
   },
   {
+    path: 'agregar-producto',
+    loadChildren: () => import('./pages/agregar-producto/agregar-producto.module').then( m => m.AgregarProductoPageModule)
+  },
+  {
+    path: 'listado-productos',
+    loadChildren: () => import('./pages/listado-productos/listado-productos.module').then( m => m.ListadoProductosPageModule)
+  },
+  {
     path: '**', 
     redirectTo: 'notfound',
     pathMatch: 'full'
-  },
+  }
+  
 
 
 ];

@@ -5,43 +5,15 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let producto of productos">
-        <ion-card>
-          <img [src]="producto.imagen" />
-          <ion-card-header>
-            <ion-card-title>{{ producto.nombre }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-button expand="full" (click)="mostrarDetalles(producto)">Ver detalles</ion-button>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-modal [isOpen]="isModalOpen" (ionModalDidClose)="isModalOpen = false">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Detalles del producto</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="isModalOpen = false">Cerrar</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <img [src]="productoSeleccionado?.imagen" />
-        <ion-card>
-          <ion-card-header>
-            <h2>{{ productoSeleccionado?.nombre }}</h2>
-          </ion-card-header>
-          <ion-card-content>
-            <p>{{ productoSeleccionado?.descripcion }}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
+  <ion-item *ngFor="let x of arregloProducto">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title><strong>Producto: </strong>{{ x.nombre_producto }}</ion-card-title>
+        <ion-card-subtitle><strong>Descripción: </strong>{{ x.descripcion_producto }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-img [src]="x.foto_producto" alt="Imagen del producto"></ion-img>
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
 </ion-content>

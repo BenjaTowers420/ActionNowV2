@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 import { AlertController, ToastController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 
@@ -15,11 +16,12 @@ export class RecuperarContraPage implements OnInit {
     confirmarContrasena: ''
   };
 
-  constructor(private router: Router, private alertController: AlertController, private toastController: ToastController, private bd: ServicebdService) { }
+  constructor(private router: Router, private alertController: AlertController, private toastController: ToastController, private bd: ServicebdService, private vibration: Vibration) { }
 
   ngOnInit() {}
 
   async mostrarAlerta(mensaje: string) {
+    this.vibration.vibrate(1000);
     const alert = await this.alertController.create({
       header: 'Alerta',
       message: mensaje,

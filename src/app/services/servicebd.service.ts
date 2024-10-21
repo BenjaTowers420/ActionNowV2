@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Rol } from './rol';
 import { Comentarios } from './comentarios';
 import { Usuarios } from './usuarios';
+import { Productos } from './productos';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,13 @@ export class ServicebdService {
   //variable de conexión a Base de Datos
   public database!: SQLiteObject;
 
-  //variables de creación de Tablas
-  //tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario(idusuario INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(100) NOT NULL, edad INTEGER NOT NULL, imc NUMBER NOT NULL, objetivo VARCHAR(60), idrol INTEGER NOT NULL, idrutina INTEGER NOT NULL);";
-  //tablaRol: string = "CREATE TABLE IF NOT EXISTS rol(idrol INTEGER PRIMARY KEY autoincrement, nomrol VARCHAR(60))";
-  //tablaRutina: string ="CREATE TABLE IF NOT EXISTS rutina(idrutina INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(100) NOT NULL, descripcion VARCHAR(150), dificultad VARCHAR(60) NOT NULL";
+  
   //tablas sin Clave Foranea
 tablaRol: string = "CREATE TABLE IF NOT EXISTS rol (id_rol INTEGER PRIMARY KEY, nombre_rol VARCHAR(20) NOT NULL);";
 
 tablaComentario: string = "CREATE TABLE IF NOT EXISTS comentario (id_comentario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(100) NOT NULL, motivo VARCHAR(100) NOT NULL, texto VARCHAR(250) NOT NULL);";
 
+tablaProducto: string = "CREATE TABLE IF NOT EXISTS producto (id_producto INTEGER PRIMARY KEY autoincrement, nombre_producto VARCHAR(100) NOT NULL, descripcion_producto VARCHAR(200) NOT NULL, foto_producto VARCHAR(200) NOT NULL)";
 
 
 //Tablas con Clave
@@ -37,6 +36,8 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
   registroRol: string = "INSERT OR IGNORE INTO rol (id_rol, nombre_rol) VALUES (1, 'administrador'), (2, 'usuario')";
   
   registroComentario: string = "INSERT OR IGNORE INTO comentario (id_comentario, nombre_usuario, motivo, texto) VALUES (1, 'Joao Da Silva', 'prueba de comentario', 'esto es una prueba')";
+
+  registroProducto: string = "INSERT OR IGNORE INTO producto (id_producto, nombre_producto, descripcion_producto, foto_producto) VALUES (1, 'Proteina', 'Buena para ganar masa muscular', 'https://www.nutrabody.cl/catalogo/imagen-100-whey-protein-professional-2-350-grs--coco-1040151040.jpeg')";
 
   registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, imc, objetivo, id_rol, contrasena, foto) VALUES(1, 'Josue Machaca', 1, 1, '1', '', 1, 'ASD12345', 'https://pics.filmaffinity.com/206770211157388-nm_200.jpg'), (2, 'Don Evo', 170, 500,'500', 'Bajar de peso', 2, 'ASD12345', 'https://static.theclinic.cl/media/2009/04/evomorales.jpg');";
 
@@ -56,6 +57,7 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
   //GUARDAR DATOS DE LAS CONSULTAS EN LAS TABLAS
   listadoRol = new BehaviorSubject([]);
   listadoComentarios = new BehaviorSubject([]);
+  listadoProductos = new BehaviorSubject([]);
   listadoUsuarios = new BehaviorSubject ([]);
   listadoRutinas = new BehaviorSubject ([]);
 
@@ -84,6 +86,10 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
 
   fetchComentarios(): Observable<Comentarios[]>{
     return this.listadoComentarios.asObservable();
+  }
+
+  fetchProductos(): Observable<Productos[]>{
+    return this.listadoProductos.asObservable();
   }
 
   fetchUsuarios(): Observable<Usuarios[]>{
@@ -123,24 +129,27 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
 
       // Eliminar la tabla si ya existe
       //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS comentario', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS comentario', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS rutina', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS rol', []);
 
       //ejecuto la creación de Tablas
       await this.database.executeSql(this.tablaRol, []);
       await this.database.executeSql(this.tablaComentario, []);
+      await this.database.executeSql(this.tablaProducto, []);
       await this.database.executeSql(this.tablaRutina, []);
       await this.database.executeSql(this.tablaUsuario, []);
 
       //ejecuto los insert por defecto en el caso que existan
       await this.database.executeSql(this.registroRol, []);
       await this.database.executeSql(this.registroComentario, []);
+      await this.database.executeSql(this.registroProducto, []);
       await this.database.executeSql(this.registroRutina, []);
       await this.database.executeSql(this.registroUsuario, []);
 
       this.seleccionarUsuarios();
       this.seleccionarComentarios();
+      this.seleccionarProductos();
       //modifico el estado de la Base de Datos
       this.isDBReady.next(true);
 
@@ -256,6 +265,15 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
     const usuario = await this.obtenerUsuarioPorNombre(nombre);
     return usuario !== null;
   }
+
+  cambiarContrasena(nombreUsuario: string, nuevaContrasena: string): Promise<any> {
+    return this.database.executeSql('UPDATE usuario SET contrasena = ? WHERE nombre = ?', [nuevaContrasena, nombreUsuario])
+      .then(res => {
+        this.presentAlert('Éxito', 'Contraseña cambiada con éxito');
+      }).catch(e => {
+        this.presentAlert('Error', 'Error al cambiar la contraseña: ' + JSON.stringify(e));
+      });
+  }
   
   
   actualizarFotoUsuario(id: string, foto: string) {
@@ -300,13 +318,47 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
     })
   }
 
-  cambiarContrasena(nombreUsuario: string, nuevaContrasena: string): Promise<any> {
-    return this.database.executeSql('UPDATE usuario SET contrasena = ? WHERE nombre = ?', [nuevaContrasena, nombreUsuario])
-      .then(res => {
-        this.presentAlert('Éxito', 'Contraseña cambiada con éxito');
-      }).catch(e => {
-        this.presentAlert('Error', 'Error al cambiar la contraseña: ' + JSON.stringify(e));
-      });
+
+  seleccionarProductos(){
+    return this.database.executeSql('SELECT * FROM producto', []).then(res=>{
+       //variable para almacenar el resultado de la consulta
+       let items: Productos[] = [];
+       //valido si trae al menos un registro
+       if(res.rows.length > 0){
+        //recorro mi resultado
+        for(var i=0; i < res.rows.length; i++){
+          //agrego los registros a mi lista
+          items.push({
+            id_producto: res.rows.item(i).id_producto,
+            nombre_producto: res.rows.item(i).nombre_producto,
+            descripcion_producto: res.rows.item(i).descripcion_producto,
+            foto_producto: res.rows.item(i).foto_producto
+          })
+        }
+        
+       }
+       //actualizar el observable
+       this.listadoProductos.next(items as any);
+
+    })
+  }
+
+  insertarProducto(nombre_producto:string, descripcion_producto:string, foto_producto:string){
+    return this.database.executeSql('INSERT INTO producto(nombre_producto,descripcion_producto, foto_producto) VALUES (?,?,?)',[nombre_producto, descripcion_producto, foto_producto]).then(res=>{
+      this.presentAlert("Insertar","Producto Registrado");
+      this.seleccionarProductos();
+    }).catch(e=>{
+      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+    })
+  }
+
+  eliminarProducto(id:string){
+    return this.database.executeSql('DELETE FROM producto WHERE id_producto = ?',[id]).then(res=>{
+      this.presentAlert("Eliminar","Producto Eliminado");
+      this.seleccionarProductos();
+    }).catch(e=>{
+      this.presentAlert('Eliminar', 'Error: ' + JSON.stringify(e));
+    })
   }
   
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { ServicebdService } from 'src/app/services/servicebd.service';
 
 @Component({
   selector: 'app-productos',
@@ -33,7 +34,19 @@ export class ProductosPage {
   isModalOpen = false;
   productoSeleccionado: any;
 
-  constructor(private modalController: ModalController) {}
+  arregloProducto: any = []
+
+  constructor(private modalController: ModalController, private bd: ServicebdService) {}
+
+  ngOnInit() {
+    this.bd.dbState().subscribe(data => {
+      if (data) {
+        this.bd.fetchProductos().subscribe(res => {
+          this.arregloProducto = res;
+        });
+      }
+    });
+  }
 
   mostrarDetalles(producto: any) {
     this.productoSeleccionado = producto;
