@@ -12,7 +12,7 @@ export class AdminPage {
 
   arregloUsuario: any[] = [];
 
-  constructor(private bd: ServicebdService, private router: Router) { }
+  constructor(private bd: ServicebdService, private router: Router, private alertController: AlertController) { }
 
   ngOnInit() {
     this.bd.dbState().subscribe(data => {
@@ -34,17 +34,26 @@ export class AdminPage {
   }
 
   eliminar(x: any) {
-    this.bd.eliminarUsuario(x.id_usuario).then(() => {
-      // refrescar la lista tras eliminar el usuario
-      this.arregloUsuario = this.arregloUsuario.filter(u => u.id_usuario !== x.id_usuario);
-    });
-  }
-
-  agregar() {
-    this.router.navigate(['/agregar-usuario']);
+    if (x.id_rol === 1) { // Verificamos si el usuario es un admin
+      this.presentAlert('Error', 'No se puede eliminar un usuario con rol de Administrador.');
+    } else {
+      this.bd.eliminarUsuario(x.id_usuario).then(() => {
+        // Refrescar la lista tras eliminar el usuario
+        this.arregloUsuario = this.arregloUsuario.filter(u => u.id_usuario !== x.id_usuario);
+      })
+    }
   }
 
   mostrarRol(id_rol: number): string {
     return id_rol === 1 ? 'Admin' : 'Usuario';
+  }
+
+  async presentAlert(titulo: string, msj: string) {
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: msj,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 }

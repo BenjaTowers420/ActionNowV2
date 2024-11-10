@@ -51,6 +51,11 @@
         <ion-label>Enviar comentarios</ion-label>
       </ion-item>
 
+      <ion-item [routerDirection]="'root'" [routerLink]="'/respuesta-usuario'" (click)="closeMenu()">
+        <ion-icon class="icono" slot="start" name="cube-outline"></ion-icon>
+        <ion-label>Mis comentarios</ion-label>
+      </ion-item>
+
       <div class="menu-footer">
         <ion-item *ngIf="isAdmin" routerLink="/admin" (click)="closeMenu()">
           <ion-icon class="icono" slot="start" name="albums-outline"></ion-icon>

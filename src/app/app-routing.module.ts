@@ -78,10 +78,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/listado-productos/listado-productos.module').then( m => m.ListadoProductosPageModule)
   },
   {
+    path: 'respuesta-admin',
+    loadChildren: () => import('./pages/respuesta-admin/respuesta-admin.module').then( m => m.RespuestaAdminPageModule)
+  },
+  {
+    path: 'respuesta-usuario',
+    loadChildren: () => import('./pages/respuesta-usuario/respuesta-usuario.module').then( m => m.RespuestaUsuarioPageModule)
+  },
+  {
     path: '**', 
     redirectTo: 'notfound',
     pathMatch: 'full'
-  }
+  },
   
 
 

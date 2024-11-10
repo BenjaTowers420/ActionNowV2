@@ -9,12 +9,25 @@
     <ion-item-sliding *ngFor="let x of arregloComentario">
       <ion-card>
         <ion-card-header>
-          <ion-card-title><strong>Usuario: </strong>{{ x.nombre_usuario }}</ion-card-title>
-          <ion-card-subtitle><strong>Motivo: </strong>{{ x.motivo }}</ion-card-subtitle>
+          <ion-card-title>Motivo: {{ x.motivo }}</ion-card-title>
+          <ion-card-subtitle>Usuario: {{ x.nombre_usuario }}</ion-card-subtitle>
         </ion-card-header>
+
         <ion-card-content>
-          <ion-label style="word-wrap: break-word; white-space: normal;">{{ x.texto }}</ion-label>
+          <ion-label style="word-wrap: break-word;white-space: normal;">Descripción: {{ x.texto }}</ion-label><br>
+          <ion-label style="word-wrap: break-word;white-space: normal;">Respuesta: {{ x.respuesta ? x.respuesta : 'Sin respuesta' }}</ion-label>
         </ion-card-content>
+
+        <div style="display: flex; justify-content: flex-end; padding: 8px;">
+          <!-- Botón si no tiene respuesta -->
+          <ion-button *ngIf="!x.respondido" color="primary" (click)="responder(x)">Responder</ion-button>
+
+          <!-- Botón si ya tiene respuesta -->
+          <ion-button *ngIf="x.respondido" color="success">Respondido</ion-button>
+        </div>
+        <div style="display: flex; justify-content: flex-end; padding: 8px;">
+          <ion-button color="danger" (click)="eliminar(x)">Eliminar</ion-button>
+        </div>
       </ion-card>
     </ion-item-sliding>
   </ion-list>

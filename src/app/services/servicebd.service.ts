@@ -19,7 +19,7 @@ export class ServicebdService {
   //tablas sin Clave Foranea
 tablaRol: string = "CREATE TABLE IF NOT EXISTS rol (id_rol INTEGER PRIMARY KEY, nombre_rol VARCHAR(20) NOT NULL);";
 
-tablaComentario: string = "CREATE TABLE IF NOT EXISTS comentario (id_comentario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(100) NOT NULL, motivo VARCHAR(100) NOT NULL, texto VARCHAR(250) NOT NULL);";
+tablaComentario: string = "CREATE TABLE IF NOT EXISTS comentario (id_comentario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(100) NOT NULL, motivo VARCHAR(100) NOT NULL, texto VARCHAR(250) NOT NULL, respuesta VARCHAR(250));";
 
 tablaProducto: string = "CREATE TABLE IF NOT EXISTS producto (id_producto INTEGER PRIMARY KEY autoincrement, nombre_producto VARCHAR(100) NOT NULL, descripcion_producto VARCHAR(200) NOT NULL, foto_producto VARCHAR(200) NOT NULL)";
 
@@ -35,7 +35,7 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
   //INSERT
   registroRol: string = "INSERT OR IGNORE INTO rol (id_rol, nombre_rol) VALUES (1, 'administrador'), (2, 'usuario')";
   
-  registroComentario: string = "INSERT OR IGNORE INTO comentario (id_comentario, nombre_usuario, motivo, texto) VALUES (1, 'Joao Da Silva', 'prueba de comentario', 'esto es una prueba')";
+  registroComentario: string = "INSERT OR IGNORE INTO comentario (id_comentario, nombre_usuario, motivo, texto, respuesta) VALUES (1, 'Joao Da Silva', 'prueba de comentario', 'esto es una prueba', 'respuesta de comentario')";
 
   registroProducto: string = "INSERT OR IGNORE INTO producto (id_producto, nombre_producto, descripcion_producto, foto_producto) VALUES (1, 'Proteina', 'Buena para ganar masa muscular', 'https://www.nutrabody.cl/catalogo/imagen-100-whey-protein-professional-2-350-grs--coco-1040151040.jpeg')";
 
@@ -87,6 +87,7 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
   fetchComentarios(): Observable<Comentarios[]>{
     return this.listadoComentarios.asObservable();
   }
+  
 
   fetchProductos(): Observable<Productos[]>{
     return this.listadoProductos.asObservable();
@@ -285,29 +286,25 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
       });
   }
 
-  seleccionarComentarios(){
-    return this.database.executeSql('SELECT * FROM comentario', []).then(res=>{
-       //variable para almacenar el resultado de la consulta
-       let items: Comentarios[] = [];
-       //valido si trae al menos un registro
-       if(res.rows.length > 0){
-        //recorro mi resultado
-        for(var i=0; i < res.rows.length; i++){
-          //agrego los registros a mi lista
+  seleccionarComentarios() {
+    return this.database.executeSql('SELECT * FROM comentario', []).then(res => {
+      let items: Comentarios[] = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
           items.push({
             id_comentario: res.rows.item(i).id_comentario,
             nombre_usuario: res.rows.item(i).nombre_usuario,
             motivo: res.rows.item(i).motivo,
-            texto: res.rows.item(i).texto
-          })
+            texto: res.rows.item(i).texto,
+            respuesta: res.rows.item(i).respuesta
+          });
         }
-        
-       }
-       //actualizar el observable
-       this.listadoComentarios.next(items as any);
-
+      }
+      // Asegúrate de emitir los comentarios correctamente
+      this.listadoComentarios.next(items as any);  // Actualiza el BehaviorSubject
     })
   }
+  
 
   insertarComentario(nombre_usuario:string, motivo:string, texto:string){
     return this.database.executeSql('INSERT INTO comentario(nombre_usuario,motivo,texto) VALUES (?,?,?)',[nombre_usuario, motivo, texto]).then(res=>{
@@ -315,6 +312,24 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
       this.seleccionarComentarios();
     }).catch(e=>{
       this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+    })
+  }
+
+  eliminarComentario(id:string){
+    return this.database.executeSql('DELETE FROM comentario WHERE id_comentario = ?',[id]).then(res=>{
+      this.presentAlert("Eliminar","Comentario Eliminado");
+      this.seleccionarComentarios();
+    }).catch(e=>{
+      this.presentAlert('Eliminar', 'Error: ' + JSON.stringify(e));
+    })
+  }
+
+  responderComentario(id:string, respuesta: string){
+    return this.database.executeSql('UPDATE comentario SET respuesta = ? WHERE id_comentario = ?',[respuesta,id]).then(res=>{
+      this.presentAlert("Responder","Respuesta Enviada");
+      this.seleccionarComentarios();
+    }).catch(e=>{
+      this.presentAlert('Modificar', 'Error: ' + JSON.stringify(e));
     })
   }
 
@@ -360,5 +375,4 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
       this.presentAlert('Eliminar', 'Error: ' + JSON.stringify(e));
     })
   }
-  
 }

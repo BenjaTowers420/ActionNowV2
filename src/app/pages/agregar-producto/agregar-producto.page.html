@@ -6,10 +6,10 @@
 
 <ion-content [fullscreen]="true">
   <ion-item>
-    <ion-input label="Titulo Producto" labelPlacement="floating" placeholder="Ingrese titulo" [(ngModel)]="nombre_producto"></ion-input>
+    <ion-input label="Titulo Producto" labelPlacement="floating" placeholder="Ingrese titulo" [(ngModel)]="nombre_producto" required></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input label="Descripcion Producto" labelPlacement="floating" placeholder="Ingrese descripcion"  [(ngModel)]="descripcion_producto"></ion-input>
+    <ion-input label="Descripcion Producto" labelPlacement="floating" placeholder="Ingrese descripcion" [(ngModel)]="descripcion_producto" required></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Foto del Producto:</ion-label>

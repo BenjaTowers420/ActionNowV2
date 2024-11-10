@@ -30,5 +30,6 @@ export class ModificarPage implements OnInit {
 
   async modificar() {
     this.bd.modificarUsuario(this.usuario.id_usuario, this.usuario.nombre, this.usuario.id_rol);
+    this.router.navigate(['/admin']); 
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { AlertController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 
 @Component({
@@ -12,12 +14,16 @@ export class AgregarProductoPage implements OnInit {
   descripcion_producto: string = "";
   foto_producto: any;
 
-  constructor(private bd: ServicebdService) { }
+  constructor(private bd: ServicebdService, private alertController: AlertController, private vibration: Vibration) { }
 
   ngOnInit() {
   }
 
-  insertar(){
+  insertar() {
+    if (!this.nombre_producto || !this.descripcion_producto || !this.foto_producto) {
+      this.mostrarAlerta('Error', 'Por favor ingrese todos los campos.');
+      return;
+    }
     this.bd.insertarProducto(this.nombre_producto, this.descripcion_producto, this.foto_producto);
   }
 
@@ -29,6 +35,16 @@ export class AgregarProductoPage implements OnInit {
     });
 
     this.foto_producto = image.webPath; // Guarda la imagen como Data URL
+  }
+
+  async mostrarAlerta(titulo: string, mensaje: string) {
+    this.vibration.vibrate(1000);
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
 }

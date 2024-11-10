@@ -7,7 +7,7 @@
 <ion-content [fullscreen]="true">
   <ion-item>
     <ion-label position="floating">Nombre Usuario</ion-label>
-    <ion-input placeholder="Ingrese nombre" [(ngModel)]="usuario.nombre" required></ion-input>
+    <ion-input [(ngModel)]="usuario.nombre" readonly required></ion-input>
   </ion-item>
 
   <ion-item>
@@ -18,6 +18,6 @@
     </ion-select>
   </ion-item>
 
-  <ion-button color="success" (click)="modificar()">Modificar Usuario</ion-button>
-  <ion-button color="warning" [routerLink]="['/admin']">Ir a lista de usuarios</ion-button>
+  <ion-button color="warning" expand="block" (click)="modificar()">Modificar Usuario</ion-button>
+  <ion-button color="warning" expand="block" [routerLink]="['/admin']">Ir a lista de usuarios</ion-button>
 </ion-content>

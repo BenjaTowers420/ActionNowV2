@@ -12,7 +12,7 @@ export class AppComponent {
 
   isAdmin: boolean = false;
   isLoginPage: boolean = false;
-  excludedRoutes: string[] = ['/login', '/registro', '/cambiar-contra'];
+  excludedRoutes: string[] = ['/login', '/registro', '/recuperar-contra'];
 
   constructor(private menu: MenuController, private router: Router, private alertController: AlertController) {
     // Escuchar los cambios de navegación para actualizar el nombre del usuario

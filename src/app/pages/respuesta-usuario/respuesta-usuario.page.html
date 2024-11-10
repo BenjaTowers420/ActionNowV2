@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Mis Comentarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Comprobamos si la lista de comentarios está vacía -->
+  <div *ngIf="comentarios.length === 0" class="mensaje-vacio">
+      <h1>Aun no has ingresado comentarios</h1>
+  </div>
+
+  <ion-list *ngIf="comentarios.length > 0">
+    <!-- Aquí se iterarán los comentarios del usuario -->
+    <ion-item *ngFor="let comentario of comentarios">
+      <ion-label>
+        <h2>Motivo: {{ comentario.motivo }}</h2>
+        <p>Descripción: {{ comentario.texto }}</p>
+        <!-- Se muestra la respuesta solo si existe -->
+        <ion-label *ngIf="comentario.respuesta">Respuesta: {{ comentario.respuesta }}</ion-label>
+        <ion-label *ngIf="!comentario.respuesta">Sin respuesta</ion-label>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

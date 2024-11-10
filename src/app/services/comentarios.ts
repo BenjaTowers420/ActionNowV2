@@ -3,4 +3,5 @@ export class Comentarios {
     nombre_usuario!: string;
     motivo!: string;
     texto!: string;
+    respuesta!: string;
 }
