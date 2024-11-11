@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Frase Aleatoria</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <!-- Mostrar la frase aleatoria -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Frase del día</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ quote }}</p>  <!-- Aquí se muestra la frase -->
+    </ion-card-content>
+  </ion-card>
+
+
+  <!-- Botón para cargar una nueva frase -->
+  <ion-button expand="full" (click)="loadRandomQuote()">Cargar nueva frase</ion-button>
+</ion-content>
+
+
+

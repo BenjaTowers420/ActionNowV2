@@ -86,6 +86,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/respuesta-usuario/respuesta-usuario.module').then( m => m.RespuestaUsuarioPageModule)
   },
   {
+    path: 'frases',
+    loadChildren: () => import('./pages/frases/frases.module').then( m => m.FrasesPageModule)
+  },
+  {
     path: '**', 
     redirectTo: 'notfound',
     pathMatch: 'full'
