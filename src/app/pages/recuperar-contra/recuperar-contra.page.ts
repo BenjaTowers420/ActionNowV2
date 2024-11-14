@@ -13,12 +13,15 @@ export class RecuperarContraPage implements OnInit {
   datosRecuperacion = {
     usuario: '',
     contrasena: '',
-    confirmarContrasena: ''
+    confirmarContrasena: '',
+    respuesta1: '',
+    respuesta2: ''
   };
 
   constructor(private router: Router, private alertController: AlertController, private toastController: ToastController, private bd: ServicebdService, private vibration: Vibration) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   async mostrarAlerta(mensaje: string) {
     this.vibration.vibrate(1000);
@@ -77,5 +80,3 @@ export class RecuperarContraPage implements OnInit {
     }
   }
 }
-
-

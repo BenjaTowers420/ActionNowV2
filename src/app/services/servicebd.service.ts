@@ -26,7 +26,7 @@ tablaProducto: string = "CREATE TABLE IF NOT EXISTS producto (id_producto INTEGE
 
 //Tablas con Clave
 
-tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(100) NOT NULL, estatura INTEGER, peso INTEGER, imc VARCHAR(40), objetivo VARCHAR(60), id_rol INTEGER NOT NULL, contrasena VARCHAR(150) NOT NULL, foto VARCHAR(200), FOREIGN KEY (id_rol) REFERENCES rol(id_rol));";
+tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(100) NOT NULL, estatura INTEGER, peso INTEGER, imc VARCHAR(40), objetivo VARCHAR(60), id_rol INTEGER NOT NULL, contrasena VARCHAR(150) NOT NULL, foto VARCHAR(200), pregunta1 VARCHAR(150), pregunta2 VARCHAR(150), FOREIGN KEY (id_rol) REFERENCES rol(id_rol));";
 
 
 tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIMARY KEY, nombre_rutina VARCHAR(30) NOT NULL, descripcion VARCHAR(2000) NOT NULL, clasificacion_imc VARCHAR(80) NOT NULL, objetivo VARCHAR(80) NOT NULL);";
@@ -39,7 +39,7 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
 
   registroProducto: string = "INSERT OR IGNORE INTO producto (id_producto, nombre_producto, descripcion_producto, foto_producto) VALUES (1, 'Proteina', 'Buena para ganar masa muscular', 'https://www.nutrabody.cl/catalogo/imagen-100-whey-protein-professional-2-350-grs--coco-1040151040.jpeg')";
 
-  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, imc, objetivo, id_rol, contrasena, foto) VALUES(1, 'Josue Machaca', 1, 1, '1', '', 1, 'ASD12345', 'https://pics.filmaffinity.com/206770211157388-nm_200.jpg'), (2, 'Don Evo', 170, 500,'500', 'Bajar de peso', 2, 'ASD12345', 'https://static.theclinic.cl/media/2009/04/evomorales.jpg');";
+  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, estatura, peso, imc, objetivo, id_rol, contrasena, foto, pregunta1, pregunta2) VALUES(1, 'Josue Machaca', 1, 1, '1', '', 1, 'ASD12345', 'https://pics.filmaffinity.com/206770211157388-nm_200.jpg', 'gato', 'Mia Khalifa'), (2, 'prueba', 170, 500,'500', 'Bajar de peso', 2, 'ASD12345', 'https://static.theclinic.cl/media/2009/04/evomorales.jpg', 'perro', 'jenifer lawrence');";
 
   registroRutina: string = "INSERT OR IGNORE INTO rutina (id_rutina, nombre_rutina, descripcion, clasificacion_imc, objetivo) VALUES " +
                          "(1, 'Plan A', 'Rutina de hipertrofia', 'bajo peso', 'ganar masa muscular'), " +
@@ -174,7 +174,9 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
             estatura: res.rows.item(i).estatura,
             peso: res.rows.item(i).peso,
             objetivo: res.rows.item(i).objetivo,
-            id_rol: res.rows.item(i).id_rol
+            id_rol: res.rows.item(i).id_rol,
+            pregunta1: res.rows.item(i).pregunta1,
+            pregunta2: res.rows.item(i).pregunta2,
           })
         }
         
@@ -275,6 +277,8 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
         this.presentAlert('Error', 'Error al cambiar la contraseña: ' + JSON.stringify(e));
       });
   }
+
+  
   
   
   actualizarFotoUsuario(id: string, foto: string) {

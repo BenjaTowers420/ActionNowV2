@@ -9,7 +9,9 @@
     <ion-item-sliding *ngFor="let x of arregloUsuario">
       <ion-item>
         <h2>{{ x.nombre }}</h2><br>
-        <ion-label>{{ mostrarRol(x.id_rol) }}</ion-label>
+        <ion-text slot="end">
+          <h2>{{ mostrarRol(x.id_rol) }}</h2>
+        </ion-text>
       </ion-item>
 
         <ion-button (click)="modificar(x)">

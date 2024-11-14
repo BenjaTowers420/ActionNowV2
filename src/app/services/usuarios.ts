@@ -5,4 +5,6 @@ export class Usuarios {
     peso!: number;
     objetivo!: string;
     id_rol!: number;
+    pregunta1!: string;
+    pregunta2!: string;
 }
