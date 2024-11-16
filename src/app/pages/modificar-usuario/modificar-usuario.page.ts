@@ -8,7 +8,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './modificar-usuario.page.html',
   styleUrls: ['./modificar-usuario.page.scss'],
 })
-export class ModificarPage implements OnInit {
+export class ModificarUsuarioPage implements OnInit {
 
   usuario: any;
 

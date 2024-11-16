@@ -21,6 +21,8 @@ export class ContadorCaloriasPage implements OnInit {
   cantidadGramos: number = 0;
   totalCalorias: number = 0;
 
+  errorMessage: string = "";
+  successMessage: string = "";
 
   constructor(private alertController: AlertController) { }
 
@@ -46,6 +48,25 @@ export class ContadorCaloriasPage implements OnInit {
     } else{
       this.totalCalorias = 0;
     }
+  }
+
+
+  onSubmit(): void{
+    this.onValidate();
+    if(!this.errorMessage){
+      this.successMessage = "Formulario Validado correctamente";
+      
+    }
+  }
+  onValidate(): void{
+    if(!this.alimentoSeleccionado || this.alimentoSeleccionado.trim() === ""){
+      this.errorMessage = "Debe seleccionar un alimento";
+    }else if(!this.cantidadGramos || this.cantidadGramos < 0){
+      this.errorMessage = "Debe ingresar una cantidad válida";
+    }else{
+      this.errorMessage = "";
+    }
+
   }
 }
 

@@ -14,6 +14,9 @@ export class AgregarProductoPage implements OnInit {
   descripcion_producto: string = "";
   foto_producto: any;
 
+  errorMessage: string = "";
+  successMessage: string = "";
+
   constructor(private bd: ServicebdService, private alertController: AlertController, private vibration: Vibration) { }
 
   ngOnInit() {
@@ -45,6 +48,26 @@ export class AgregarProductoPage implements OnInit {
       buttons: ['OK'],
     });
     await alert.present();
+  }
+
+
+  onSubmit(): void{
+    this.onValidate();
+    if(!this.errorMessage){
+      this.successMessage = "Formulario Validado correctamente";
+      
+    }
+  }
+  onValidate(): void {
+    if (!this.nombre_producto || this.nombre_producto.trim() === "") {
+      this.errorMessage = "Debe rellenar el campo nombre"; 
+    } else if (!this.descripcion_producto || this.descripcion_producto.trim() === "") {
+      this.errorMessage = "Debe ingresar una descripcion para el producto"; 
+    } else if (!this.foto_producto || this.foto_producto.trim() === "") {
+      this.errorMessage = "Debe ingresar una foto para el producto"; 
+    } else {
+      this.errorMessage = "";
+    }
   }
 
 }

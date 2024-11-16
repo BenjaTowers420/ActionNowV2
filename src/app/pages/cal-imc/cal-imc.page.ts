@@ -15,7 +15,10 @@ export class CalImcPage {
   peso: number = 0;
   imc: number = 0;
   nombreUsuario: string = localStorage.getItem('nombreUsuario') || '';
-  id_usuario: string = ''; // El ID del usuario logeado 
+  id_usuario: string = ''; 
+
+  errorMessage: string = "";
+  successMessage: string = "";
 
   constructor(private alertController: AlertController, private bd:ServicebdService, private router: Router){}
 
@@ -46,6 +49,26 @@ export class CalImcPage {
     this.bd.actualizarDatosUsuario(this.id_usuario, this.estatura, this.peso, this.imc, this.objetivo)
     this.router.navigate(['/recomendacion-rutina']);
   }
+
+
+  onSubmit(): void{
+    this.onValidate();
+    if(!this.errorMessage){
+      this.successMessage = "Formulario Validado correctamente";
+      
+    }
+  }
+  onValidate(): void {
+    // Verificamos si los valores son menores o iguales a cero
+    if (this.peso <= 0) {
+      this.errorMessage = "Debe ingresar un numero válido";
+    } else if (this.estatura <= 0) {
+      this.errorMessage = "Debe ingresar un numero válido";
+    } else {
+      this.errorMessage = "";
+    }
+  }  
+  
 }
 
 

@@ -24,6 +24,9 @@ export class RegistroPage {
   mayusculaValida: boolean = false;
   numeroValido: boolean = false;
 
+  errorMessage: string = "";
+  successMessage: string = "";
+
 
   constructor(private router: Router, private alertController: AlertController, private bd: ServicebdService, private vibration: Vibration) {}
 
@@ -81,4 +84,51 @@ export class RegistroPage {
       this.mostrarAlerta('Error al registrar el usuario. Inténtelo de nuevo.');
     }
   }
+
+
+  onSubmit(): void{
+    this.onValidate();
+    if(!this.errorMessage){
+      this.successMessage = "Formulario Validado correctamente";
+      
+    }
+  }
+  onValidate(): void {
+    this.errorMessage = ""; // Resetear mensaje de error
+  
+    // Validación de campos vacíos
+    if (!this.datosRegistro.usuario || this.datosRegistro.usuario.trim() === "") {
+      this.errorMessage = "Debe rellenar el campo nombre";
+    }
+    if (!this.datosRegistro.contrasena || this.datosRegistro.contrasena.trim() === "") {
+      if (this.errorMessage) {
+        this.errorMessage += " y contraseña";  // Concatenar si ya hay un mensaje de error
+      } else {
+        this.errorMessage = "Debe rellenar el campo contraseña";
+      }
+    }
+  
+    // Validación de contraseña con mayúscula y número
+    if (this.datosRegistro.contrasena) {
+      if (!/[A-Z]/.test(this.datosRegistro.contrasena)) {
+        this.errorMessage = this.errorMessage ? `${this.errorMessage} - La contraseña debe contener al menos una mayúscula` : 'La contraseña debe contener al menos una mayúscula';
+      }
+      if (!/\d/.test(this.datosRegistro.contrasena)) {
+        this.errorMessage = this.errorMessage ? `${this.errorMessage} y un número` : 'La contraseña debe contener al menos un número';
+      }
+    }
+  
+    // Validación de contraseñas coincidentes
+    if (this.datosRegistro.contrasena && this.datosRegistro.confirmarContrasena && this.datosRegistro.contrasena !== this.datosRegistro.confirmarContrasena) {
+      this.errorMessage = 'Las contraseñas no coinciden.'; // Directamente asignamos el mensaje
+    }
+  
+    // Si ambos campos son válidos, limpiar el mensaje de error
+    if (this.datosRegistro.usuario && this.datosRegistro.contrasena && !this.errorMessage) {
+      this.errorMessage = ""; 
+    }
+  }
+  
+  
+  
 }
