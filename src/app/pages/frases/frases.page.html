@@ -1,25 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Frase Aleatoria</ion-title>
+    <ion-title>Frases Inspiradoras</ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-content class="ion-padding">
+  <h2>"{{ fraseActual }}"</h2>
+  <p>- {{ autor }}</p>
 
-<ion-content>
-  <!-- Mostrar la frase aleatoria -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Frase del día</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>{{ quote }}</p>  <!-- Aquí se muestra la frase -->
-    </ion-card-content>
-  </ion-card>
+  <!-- Indicador de carga -->
+  <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
 
-
-  <!-- Botón para cargar una nueva frase -->
-  <ion-button expand="full" (click)="loadRandomQuote()">Cargar nueva frase</ion-button>
+  <ion-button expand="full" (click)="cargarFrase()" [disabled]="loading">Nueva Frase</ion-button>
 </ion-content>
-
-
-

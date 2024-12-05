@@ -1,28 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { retry } from 'rxjs/operators';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsumoapiService {
 
+  // URL completa de la API de ZenQuotes
+  private apiURL = 'https://zenquotes.io/api/quotes/';
 
-  // URL base de la API (ahora usa la ruta relativa)
-  private apiURL = '/api';  // Cambié la URL a la ruta relativa
+  constructor(private http: HttpClient) { }
 
-
-  constructor(private http: HttpClient) {}
-
-
-  // Método GET para obtener una frase aleatoria
+  // Método para obtener la frase aleatoria desde la API
   getRandomQuote(): Observable<any> {
-    return this.http.get(`${this.apiURL}/random`).pipe(
-      retry(3)  // Reintenta la petición 3 veces en caso de error
-    );
+    return this.http.get(this.apiURL);
   }
 }
-
-
