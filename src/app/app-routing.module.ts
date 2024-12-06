@@ -90,6 +90,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/frases/frases.module').then( m => m.FrasesPageModule)
   },
   {
+    path: 'modificar-producto',
+    loadChildren: () => import('./pages/modificar-producto/modificar-producto.module').then( m => m.ModificarProductoPageModule)
+  },
+  {
     path: '**', 
     redirectTo: 'notfound',
     pathMatch: 'full'

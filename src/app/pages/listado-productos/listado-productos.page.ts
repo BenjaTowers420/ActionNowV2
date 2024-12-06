@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 
 @Component({
@@ -23,12 +23,23 @@ export class ListadoProductosPage implements OnInit {
     });
   }
 
+  
+
   eliminar(x:any){
     this.bd.eliminarProducto(x.id_producto);
   }
 
   agregar(){
     this.router.navigate(['/agregar-producto']);
+  }
+
+  modificar(x: any) {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        producto: x
+      }
+    };
+    this.router.navigate(['/modificar-producto'], navigationExtras);
   }
 
 }

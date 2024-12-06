@@ -12,7 +12,7 @@
 
   <ion-item>
     <ion-label position="floating">Rol</ion-label>
-    <ion-select [(ngModel)]="usuario.id_rol" placeholder="Seleccione un rol" required>
+    <ion-select [(ngModel)]="usuario.id_rol" [placeholder]="getPlaceholder()" required>
       <ion-select-option value="1">Admin</ion-select-option>
       <ion-select-option value="2">Usuario</ion-select-option>
     </ion-select>

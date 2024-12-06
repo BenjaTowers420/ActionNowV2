@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Modificar Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item>
+    <ion-label position="floating">Nombre Producto</ion-label>
+    <ion-input [(ngModel)]="producto.nombre_producto"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Descripcion Producto</ion-label>
+    <ion-input [(ngModel)]="producto.descripcion_producto"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Foto del Producto:</ion-label>
+    <ion-button color="warning" (click)="tomarFoto()">Tomar Foto</ion-button>
+  </ion-item>
+
+  <ion-button color="warning" expand="block" (click)="modificar()">Modificar Usuario</ion-button>
+  <ion-button color="warning" expand="block" [routerLink]="['/listado-productos']">Ir a lista de productos</ion-button>
+</ion-content>

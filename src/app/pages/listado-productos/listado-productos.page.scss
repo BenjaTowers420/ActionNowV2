@@ -1,0 +1,11 @@
+/* Estilo para las imágenes de los productos */
+.img-producto {
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+    max-width: 150px; /* Tamaño máximo de ancho */
+    height: 150px; /* Altura fija */
+    object-fit: cover; /* Recorta y ajusta la imagen para que cubra el área del contenedor */
+    border-radius: 8px; /* Bordes redondeados */
+    display: block;
+    margin: auto;
+  }
+  

@@ -14,8 +14,14 @@
         </ion-card-header>
 
         <ion-card-content>
-          <ion-img [src]="x.foto_producto" alt="Imagen del producto" style="width: 100%; max-width: 150px; height: auto; display: block; margin: auto;"></ion-img>
+          <ion-img [src]="x.foto_producto" alt="Imagen del producto" class="img-producto"></ion-img>
         </ion-card-content>
+
+        <div style="display: flex; justify-content: flex-end; padding: 8px;">
+          <ion-button color="danger" (click)="modificar(x)" fill="clear">
+            <ion-icon slot="icon-only" name="pencil"></ion-icon>
+          </ion-button>
+        </div>
 
         <div style="display: flex; justify-content: flex-end; padding: 8px;">
           <ion-button color="danger" (click)="eliminar(x)" fill="clear">

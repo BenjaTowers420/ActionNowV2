@@ -379,4 +379,14 @@ tablaRutina: string = "CREATE TABLE IF NOT EXISTS rutina (id_rutina INTEGER PRIM
       this.presentAlert('Eliminar', 'Error: ' + JSON.stringify(e));
     })
   }
+
+  modificarProducto(id_producto:string, nombre_producto:string, descripcion_producto : string, foto_producto : string){
+    return this.database.executeSql('UPDATE producto SET nombre_producto = ?, descripcion_producto = ?, foto_producto = ? WHERE id_producto = ?',[nombre_producto,descripcion_producto,foto_producto,id_producto]).then(res=>{
+      this.presentAlert("Modificar","Producto Modificado");
+      this.seleccionarUsuarios();
+    }).catch(e=>{
+      this.presentAlert('Modificar', 'Error: ' + JSON.stringify(e));
+    })
+
+  }
 }
